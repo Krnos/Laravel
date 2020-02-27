@@ -1,0 +1,40 @@
+{
+    "name": "krnos/laravel",
+    "type": "library",
+    "require": {
+        "php": ">=7.1",
+        "illuminate/support": "^5.7|^6.0",
+        "illuminate/console": "^5.7|^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Krnos\\Laravel\\": "src/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Krnos\\Laravel\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Krnos\\Laravel\\KrnosServiceProvider"
+            ]
+        }
+    },
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Ivan Sotelo",
+            "email": "isotelo@controlla.com.mx"
+        }
+    ]
+}
