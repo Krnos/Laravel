@@ -2,8 +2,11 @@
 
 namespace Krnos\Laravel;
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
+
+use Krnos\Laravel\Commands\ModelMakeCommand;
 
 class KrnosServiceProvider extends ServiceProvider
 {
@@ -15,12 +18,11 @@ class KrnosServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->singleton('make.model', function () {
-            return new Commands\ModelMakeCommand;
+            $files = new Filesystem();
+            return new ModelMakeCommand($files);
         });
 
-        $this->commands(
-            'make.model'
-        );
+        $this->commands('make.model');
     }
 
     /**
@@ -30,6 +32,6 @@ class KrnosServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/config/fire.php', 'fire');
+        //
     }
 }
