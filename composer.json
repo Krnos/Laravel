@@ -3,7 +3,7 @@
     "type": "library",
     "require": {
         "php": ">=7.1",
-        "Illuminate/filesystem": "^5.7|^6.0|^7.0",
+        "illuminate/filesystem": "^5.7|^6.0|^7.0",
         "illuminate/support": "^5.7|^6.0|^7.0",
         "illuminate/console": "^5.7|^6.0|^7.0"
     },
