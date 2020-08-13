@@ -2,11 +2,11 @@
 
 namespace Krnos\Laravel;
 
-use Illuminate\Filesystem\Filesystem;
+use Krnos\Laravel\Console\ModelMakeCommand;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Contracts\Support\DeferrableProvider;
 
-class KrnosServiceProvider extends ServiceProvider
+class KrnosServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Perform post-registration booting of services.
@@ -15,9 +15,11 @@ class KrnosServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->commands([
-            Console\ModelMakeCommand::class
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ModelMakeCommand::class
+            ]);
+        }
     }
 
     /**
@@ -27,6 +29,21 @@ class KrnosServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if ($this->app->runningInConsole()) {
+            $this->app->extend('command.make.model', function () {
+                return new ModelMakeCommand;
+            });
+        }
+    }
+
+    /* Provides services.
+     *
+     * @return void
+     */
+    public function provides()
+    {
+        return [
+            'command.make.model'
+        ];
     }
 }

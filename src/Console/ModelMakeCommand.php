@@ -14,7 +14,6 @@ class ModelMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $name = 'make:model';
-    protected $signature = 'make:model';
 
     /**
      * The console command description.
@@ -39,26 +38,26 @@ class ModelMakeCommand extends GeneratorCommand
     {
         if ($this->option('all')) {
             $this->error('Something went wrong!');
-            $this->info('Use @Controlla/Cli for this');
+            $this->info('Use @Controlla/Cli for this action');
             return false;
         }
 
         if ($this->option('controller')) {
             $this->error('Something went wrong!');
-            $this->info('Use @Controlla/Cli for this');
+            $this->info('Use @Controlla/Cli for this action');
             return false;
         }
 
         if ($this->option('resource')) {
             $this->error('Something went wrong!');
-            $this->info('Use @Controlla/Cli for this');
+            $this->info('Use @Controlla/Cli for this action');
             return false;
         }
-        
+
         if (parent::handle() === false && ! $this->option('force')) {
             return false;
         }
-        
+
 
         if ($this->option('factory')) {
             $this->createFactory();
@@ -66,6 +65,10 @@ class ModelMakeCommand extends GeneratorCommand
 
         if ($this->option('migration')) {
             $this->createMigration();
+        }
+
+        if ($this->option('seed')) {
+            $this->createSeeder();
         }
 
     }
@@ -105,6 +108,20 @@ class ModelMakeCommand extends GeneratorCommand
     }
 
     /**
+     * Create a seeder file for the model.
+     *
+     * @return void
+     */
+    protected function createSeeder()
+    {
+        $seeder = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('make:seed', [
+            'name' => "{$seeder}Seeder",
+        ]);
+    }
+
+    /**
      * Create a controller for the model.
      *
      * @return void
@@ -129,22 +146,22 @@ class ModelMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        if ($this->option('pivot')) {
-            return __DIR__ .'/vendor/laravel/framework/src/Illuminate/Foundation/Console/stubs/pivot.model.stub';
-        }
-
-        return __DIR__ .'/vendor/laravel/framework/src/Illuminate/Foundation/Console/stubs/model.stub';
+        return $this->option('pivot')
+                    ? $this->resolveStubPath('/stubs/model.pivot.stub')
+                    : $this->resolveStubPath('/stubs/model.stub');
     }
 
     /**
-     * Get the default namespace for the class.
+     * Resolve the fully-qualified path to the stub.
      *
-     * @param  string  $rootNamespace
+     * @param  string  $stub
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace)
+    protected function resolveStubPath($stub)
     {
-        return $rootNamespace;
+        return file_exists($customPath = $this->laravel->basePath().'/vendor/laravel/framework/src/Illuminate/Foundation/Console'.$stub)
+                        ? $customPath
+                        : __DIR__.$stub;
     }
 
     /**
