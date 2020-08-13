@@ -1,6 +1,6 @@
 <?php
 
-namespace Krnos\Laravel\Commands;
+namespace Krnos\Laravel\Console;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
@@ -14,6 +14,7 @@ class ModelMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $name = 'make:model';
+    protected $signature = 'make:model';
 
     /**
      * The console command description.
@@ -115,8 +116,9 @@ class ModelMakeCommand extends GeneratorCommand
         $modelName = $this->qualifyClass($this->getNameInput());
 
         $this->call('make:controller', [
-            'name' => "{$controller}Controller",
-            '--model' => $this->option('resource') ? $modelName : null,
+            'name'  => "{$controller}Controller",
+            '--model' => $this->option('resource') || $this->option('api') ? $modelName : null,
+            '--api' => $this->option('api'),
         ]);
     }
 
@@ -153,19 +155,15 @@ class ModelMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['all', 'a', InputOption::VALUE_NONE, 'Generate a migration, factory, and resource controller for the model'],
-
+            ['all', 'a', InputOption::VALUE_NONE, 'Generate a migration, seeder, factory, and resource controller for the model'],
             ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the model'],
-
             ['factory', 'f', InputOption::VALUE_NONE, 'Create a new factory for the model'],
-
             ['force', null, InputOption::VALUE_NONE, 'Create the class even if the model already exists'],
-
             ['migration', 'm', InputOption::VALUE_NONE, 'Create a new migration file for the model'],
-
+            ['seed', 's', InputOption::VALUE_NONE, 'Create a new seeder file for the model'],
             ['pivot', 'p', InputOption::VALUE_NONE, 'Indicates if the generated model should be a custom intermediate table model'],
-
             ['resource', 'r', InputOption::VALUE_NONE, 'Indicates if the generated controller should be a resource controller'],
+            ['api', null, InputOption::VALUE_NONE, 'Indicates if the generated controller should be an API controller'],
         ];
     }
 }
