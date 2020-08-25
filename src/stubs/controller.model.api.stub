@@ -1,0 +1,137 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ namespacedModel }};
+use {{ rootNamespace }}Http\Controllers\Controller;
+use {{ rootNamespace }}\Http\Filters\QueryBuilder;
+use {{ rootNamespace }}\Http\Requests\{{ model }}Request;
+use {{ rootNamespace }}\Http\Requests\ExportRequest;
+use {{ rootNamespace }}\Http\Requests\ImportRequest;
+use {{ rootNamespace }}\Exports\{{ model }}Export;
+use {{ rootNamespace }}\Imports\{{ model }}Import;
+use Maatwebsite\Excel\Excel;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
+
+class {{ class }} extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index({{ model }}Request $request)
+    {
+        $queryBuilder = new QueryBuilder(new {{ model }}, $request);
+
+        return response()->json($queryBuilder->build()->paginate(20),200);
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  {{ rootNamespace }}\Http\Requests\{{ model }}Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store({{ model }}Request $request)
+    {
+        return response()->json(tap(new {{ model }}($request->all())), 201);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Http\Response
+     */
+    public function show({{ model }} ${{ modelVariable }})
+    {
+        return response()->json(['status'=>'ok','data'=>${{ modelVariable }}],200);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  {{ rootNamespace }}\Http\Requests\{{ model }}Request  $request
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Http\Response
+     */
+    public function update({{ model }}Request $request, {{ model }} ${{ modelVariable }})
+    {
+        return tap(${{ modelVariable }})->update($request->all());
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy({{ model }} ${{ modelVariable }})
+    {
+        ${{ modelVariable }}->delete();
+        return response()->json(['code'=>204,'message'=>__('strings.deleted_successfully')],204);
+    }
+
+    /**
+     * Remove multiple resource from storage.
+     *
+     * @param  {{ rootNamespace }}\Http\Requests\{{ model }}Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyMany({{ model }}Request $request)
+    {
+        foreach ($request->input('ids') as $id) {
+            ${{ modelVariable }}={{ model }}::find($id);
+
+            if (!${{ modelVariable }}) {
+                return response()->json(['errors'=>array(['code'=>404,'message'=>__('{{ modelVariablePlural }}.not_find')])],404);
+            }
+        }
+
+        foreach ($request->input('ids') as $id) {
+            ${{ modelVariable }}={{ model }}::find($id);
+            ${{ modelVariable }}->delete();
+        }
+
+        return response()->json(['code'=>204,'message'=>__('strings.deleted_successfully')],204);
+    }
+
+    /**
+     * Display report from a listing of the resource.
+     *
+     * @param  {{ rootNamespace }}\Http\Requests\ExportRequest $request
+     * @return PDF CSV or XLS
+     */
+    public function export(ExportRequest $request, Excel $excel)
+    {
+      $file = '{{ modelVariablePlural }}.' . $request->input('format');
+      $queryBuilder = new QueryBuilder(new {{ model }}, $request);
+      return $excel->download(new {{ model }}Export($queryBuilder->build()->get()), $file);
+    }
+
+    /**
+     * Import data from a listing of the file.
+     *
+     * @param  {{ rootNamespace }}\Http\Requests\ImportRequest $request
+     * @return PDF CSV or XLS
+     */
+    public function import(ImportRequest $request, Excel $excel)
+    {
+        $excel->import(new {{ model }}Import(auth()->user()), $request->file('importFile'));
+
+        return response()->json(['code'=>201,'message'=>__('strings.imported_successfully')],201);
+    }
+
+    /**
+     * Dowload template.
+     *
+     * @return File CSV
+     */
+    public function template(Excel $excel)
+    {
+        return $excel->download(new {{ model }}Export(new Collection([])), '{{ modelVariablePlural }}.csv');
+    }
+}

@@ -3,6 +3,9 @@
 namespace Krnos\Laravel;
 
 use Krnos\Laravel\Console\ModelMakeCommand;
+use Krnos\Laravel\Console\NewComponentCommand;
+use Krnos\Laravel\Console\ControllerMakeCommand;
+use Krnos\Laravel\Console\RequestMakeCommand;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 
@@ -17,7 +20,10 @@ class KrnosServiceProvider extends ServiceProvider implements DeferrableProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                ModelMakeCommand::class
+                ModelMakeCommand::class,
+                NewComponentCommand::class,
+                ControllerMakeCommand::class,
+                RequestMakeCommand::class,
             ]);
         }
     }
