@@ -2,7 +2,9 @@
 
 namespace Krnos\Laravel\Console;
 
+use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Input\InputOption;
 
 class RequestMakeCommand extends GeneratorCommand
 {
@@ -70,11 +72,24 @@ class RequestMakeCommand extends GeneratorCommand
      * @param  string  $name
      * @return string
      */
-    protected function replaceModel($stub, $name)
+    protected function replaceModel(&$stub, $name)
     {
-        $modelVariable = Str::plural(Str::snake(class_basename($name)));
+        $modelVariable = Str::plural(Str::snake($this->option('model')));
 
-        return str_replace(['DummyModel', '{{ modelVariable }}', '{{modelVariable}}'], $modelVariable, $stub);
+        $stub = str_replace(['DummyModel', '{{ modelVariable }}', '{{modelVariable}}'], $modelVariable, $stub);
+        return $this;
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a form request for the given model.'],
+        ];
     }
 
 }

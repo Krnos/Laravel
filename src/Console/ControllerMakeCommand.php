@@ -37,7 +37,7 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__ . '/../stubs/controller.api.stub';
+        return __DIR__ . '/../stubs/controller.model.api.stub';
     }
 
     /**
@@ -97,12 +97,6 @@ class ControllerMakeCommand extends GeneratorCommand
     protected function buildModelReplacements(array $replace)
     {
         $modelClass = $this->parseModel($this->option('model'));
-
-        if (! class_exists($modelClass)) {
-            if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?", true)) {
-                $this->call('make:model', ['name' => $modelClass]);
-            }
-        }
 
         return array_merge($replace, [
             'DummyFullModelClass' => $modelClass,

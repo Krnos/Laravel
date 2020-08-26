@@ -36,6 +36,10 @@ class NewComponentCommand extends GeneratorCommand
      */
     public function handle()
     {
+        if (parent::handle() === false) {
+            return false;
+        }
+
         $this->createFactory();
 
         $this->createMigration();
@@ -48,9 +52,9 @@ class NewComponentCommand extends GeneratorCommand
 
         $this->createImport();
 
-        $this->createController();
-
         $this->createTest();
+
+        $this->createController();
     }
 
     /**
@@ -108,6 +112,7 @@ class NewComponentCommand extends GeneratorCommand
 
         $this->call('component:request', [
             'name' => "{$request}Request",
+            '--model' => $request,
         ]);
     }
 
@@ -140,7 +145,7 @@ class NewComponentCommand extends GeneratorCommand
         $modelName = $this->qualifyClass($this->getNameInput());
 
         $this->call('make:import', [
-            'name' => "{$import}Export",
+            'name' => "{$import}Import",
             '--model' => $modelName,
         ]);
     }

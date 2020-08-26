@@ -4,12 +4,12 @@ namespace {{ namespace }};
 
 use {{ namespacedModel }};
 use {{ rootNamespace }}Http\Controllers\Controller;
-use {{ rootNamespace }}\Http\Filters\QueryBuilder;
-use {{ rootNamespace }}\Http\Requests\{{ model }}Request;
-use {{ rootNamespace }}\Http\Requests\ExportRequest;
-use {{ rootNamespace }}\Http\Requests\ImportRequest;
-use {{ rootNamespace }}\Exports\{{ model }}Export;
-use {{ rootNamespace }}\Imports\{{ model }}Import;
+use {{ rootNamespace }}Http\Filters\QueryBuilder;
+use {{ rootNamespace }}Http\Requests\{{ model }}Request;
+use {{ rootNamespace }}Http\Requests\ExportRequest;
+use {{ rootNamespace }}Http\Requests\ImportRequest;
+use {{ rootNamespace }}Exports\{{ model }}Export;
+use {{ rootNamespace }}Imports\{{ model }}Import;
 use Maatwebsite\Excel\Excel;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -32,7 +32,7 @@ class {{ class }} extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  {{ rootNamespace }}\Http\Requests\{{ model }}Request  $request
+     * @param  {{ rootNamespace }}Http\Requests\{{ model }}Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store({{ model }}Request $request)
@@ -54,7 +54,7 @@ class {{ class }} extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  {{ rootNamespace }}\Http\Requests\{{ model }}Request  $request
+     * @param  {{ rootNamespace }}Http\Requests\{{ model }}Request  $request
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
@@ -78,7 +78,7 @@ class {{ class }} extends Controller
     /**
      * Remove multiple resource from storage.
      *
-     * @param  {{ rootNamespace }}\Http\Requests\{{ model }}Request  $request
+     * @param  {{ rootNamespace }}Http\Requests\{{ model }}Request  $request
      * @return \Illuminate\Http\Response
      */
     public function destroyMany({{ model }}Request $request)
@@ -102,7 +102,7 @@ class {{ class }} extends Controller
     /**
      * Display report from a listing of the resource.
      *
-     * @param  {{ rootNamespace }}\Http\Requests\ExportRequest $request
+     * @param  {{ rootNamespace }}Http\Requests\ExportRequest $request
      * @return PDF CSV or XLS
      */
     public function export(ExportRequest $request, Excel $excel)
@@ -115,7 +115,7 @@ class {{ class }} extends Controller
     /**
      * Import data from a listing of the file.
      *
-     * @param  {{ rootNamespace }}\Http\Requests\ImportRequest $request
+     * @param  {{ rootNamespace }}Http\Requests\ImportRequest $request
      * @return PDF CSV or XLS
      */
     public function import(ImportRequest $request, Excel $excel)
