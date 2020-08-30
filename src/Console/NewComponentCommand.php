@@ -127,7 +127,7 @@ class NewComponentCommand extends GeneratorCommand
 
         $modelName = $this->qualifyClass($this->getNameInput());
 
-        $this->call('make:export', [
+        $this->call('component:export', [
             'name' => "{$export}Export",
             '--model' => $modelName,
         ]);
@@ -144,7 +144,7 @@ class NewComponentCommand extends GeneratorCommand
 
         $modelName = $this->qualifyClass($this->getNameInput());
 
-        $this->call('make:import', [
+        $this->call('component:import', [
             'name' => "{$import}Import",
             '--model' => $modelName,
         ]);
