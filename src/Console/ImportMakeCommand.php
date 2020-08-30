@@ -5,7 +5,7 @@ namespace Krnos\Laravel\Console;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
-class ExportMakeCommand extends GeneratorCommand
+class ImportMakeCommand extends GeneratorCommand
 {
     use WithModelStub;
 
@@ -14,21 +14,21 @@ class ExportMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'component:export';
+    protected $name = 'component:import';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new export class';
+    protected $description = 'Create a new import class';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'Export';
+    protected $type = 'Import';
 
     /**
      * Get the stub file for the generator.
@@ -38,7 +38,7 @@ class ExportMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         return $this->option('model')
-            ? $this->resolveStubPath('/../stubs/export.stub')
+            ? $this->resolveStubPath('/stubs/import.stub')
             : $this->error('Something went wrong!');
     }
 
@@ -51,7 +51,7 @@ class ExportMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Exports';
+        return $rootNamespace . '\Imports';
     }
 
     /**
@@ -82,7 +82,7 @@ class ExportMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate an export for the given model.'],
+            ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate an import for the given model.'],
         ];
     }
 }
