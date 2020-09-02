@@ -38,7 +38,7 @@ class ImportMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         return $this->option('model')
-            ? $this->resolveStubPath('/stubs/import.stub')
+            ? $this->resolveStubPath('/../stubs/import.stub')
             : $this->error('Something went wrong!');
     }
 
