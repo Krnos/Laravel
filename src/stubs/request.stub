@@ -3,6 +3,7 @@
 namespace {{ namespace }};
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class {{ class }} extends FormRequest
 {
