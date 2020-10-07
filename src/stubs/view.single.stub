@@ -1,0 +1,200 @@
+<template lang="pug">
+  .crud(v-shortcuts="[{ shortcut: [ 'c', ], callback: addRecord, push: true, focus: true },{ shortcut: [ 'e', ], callback: editShortcut, push: true, focus: true },{ shortcut: [ 'f', ], callback: setFocusSearch, push: true, focus: true },]")
+    modal-import(model="{{ model }}")
+    modal-{{ model }}(:form='form', :is-add='isModalAdd')
+    .container-fluid
+      vm-row.heading(vm-w="12")
+        vm-col(vm-type="flex" vm-align="center" vm-lg=6 vm-sm=6)
+          div
+            h2 {{ $t('strings.{{ model }}') }}:
+            span {{ $t('strings.description', {attribute: $t('strings.{{ model }}')}) }}
+          div(style="display:none;")
+            vm-button(type="default" icon="list")
+            vm-button(type="default" icon="grid" color="rgba(var(--gray),1)")
+        vm-col(vm-type="flex" vm-align="center" vm-justify="flex-end" vm-lg=6 vm-sm=6)
+          div
+            vm-button(icon="plus" @click="addRecord") {{ $t('strings.add') }}
+            vm-tooltip(:text="$t('strings.options')" delay=".5s")
+              vm-dropdown(vm-custom-content vm-trigger-click vm-trigger-outside-click)
+                vm-button(type="border" icon="more-horizotnal" color="#afbbc6")
+
+                vm-dropdown-menu
+                  vm-dropdown-item.d-flex.justify-content-between(v-if="$auth.check('Admin')" @click="exportRecords")
+                    vm-icon(icon="download-outline")
+                    slot &nbsp;{{ $t('strings.export') }}
+                  vm-dropdown-item.d-flex.justify-content-between(@click="setModalImportVisible")
+                    vm-icon(icon="upload-outline")
+                    slot &nbsp;{{ $t('strings.import') }}
+                  vm-dropdown-item.d-flex.justify-content-between(@click="deleteRecordsConfirm" :disabled="!enabledDelete")
+                    vm-icon(icon="trash-2-outline")
+                    slot &nbsp;{{ $t('strings.delete') }}
+                  //- More options
+                      Agrega mas acciones para colecciones de datos
+      vm-row(vm-w="12")
+        vm-col.card(vm-sm=12)
+          vm-table(multiple v-model="selected"  max-height="350px" :data="{{ model }}" )
+            template(slot="header")
+              .d-flex.justify-content-between
+                vm-input(ref="search" icon="search" size="small" :placeholder="searchPlaceholder" v-model="filters.where.param" @keyup.enter="applyFilter(filters)" width="300px")
+                div
+                  vm-order-by(:sort-by-text="$t('strings.order_by')" placeholder="Ninguno" :data="columnsOrderBy" v-model="filters.orderBy" @change="applyFilter(filters)" size="small" width="200px" :serializer="item => $t('{{ model }}.'+ item)")
+                  vm-tooltip(:text="$t('strings.filters')" delay=".5s")
+                    vm-dropdown(ref="dropdown" vm-custom-content vm-trigger-click vm-trigger-outside-click)
+                      vm-button(type="default" icon="funnel-outline" size="small")
+
+                      vm-dropdown-menu(class="filters")
+                        .heading.d-flex.justify-content-between
+                          h4 {{ $t('strings.filters') }}
+                          vm-button(type="flat" size="small" @click="clearFilter") {{ $t('strings.clear') }}
+                        vm-date-picker.filter(type="daterange" :label="$t('{{ model }}.created_at')" :placeholder="$t('strings.select_date')" @on-change="handleChange" :value="filters.betweenDates.created_at")
+                        //- Add filters
+                            Agrega los filtros que prefieras por ejemplo:
+                            vm-select.filter(:placeholder="$t('strings.multiple')" multiple autocomplete label="Status" v-model="filters.whereIn.status")
+                              vm-select-item(:key="index" :value="item.value" :text="item.text" v-for="(item,index) in status")
+
+                            NOTA: (agregar clase .filter)
+                        .filter.d-flex
+                          vm-button(@click="applyFilter(filters)") {{ $t('strings.apply') }}
+                  vm-tooltip(:text="$t('strings.display_list')" delay=".5s")
+                    vm-button(type="default" size="small" icon="list" style="display: none;")
+                  vm-tooltip(:text="$t('strings.display_grid')" delay=".5s")
+                    vm-button(type="default" size="small" icon="grid" color="rgba(var(--gray),1)" style="display: none;")
+            template(slot="thead")
+              vm-th(:key="index" v-if="column !== 'id'" v-for="(column, index) in columns") {{ $t('{{ model }}.' + column) }}
+            template(slot-scope="{data}")
+              vm-tr(:data="tr" :key="indextr" v-for="(tr, indextr) in data")
+                vm-td(:data="data[indextr][column]" :key="index" v-if="column !== 'id'" v-for="(column, index) in columns")
+                  slot(v-if="column == 'total' || column == 'unit_price'")  {{data[indextr][column] | currency }}
+                  slot(v-if="column == 'created_at'")  {{data[indextr][column] | moment("DD MMMM YYYY") }}
+                  slot(v-if="column != 'status' && column != 'created_at' && column != 'name' && column != 'role' && column != 'total' && column != 'unit_price'") {{data[indextr][column]}}
+                  vm-status-indicator(v-if="column == 'status'" :pulse="data[indextr]['status'] !== 'Activo'" :color="colorStatus(data[indextr]['status'])") {{data[indextr]['status']}}
+                vm-td
+                vm-dropdown(vm-custom-content vm-trigger-click vm-trigger-outside-click)
+                  vm-button(type="flat" icon="more-horizotnal" color="#afbbc6")
+
+                  vm-dropdown-menu
+                    vm-dropdown-item.d-flex.justify-content-between(@click="editRecord(data[indextr], tr)")
+                      vm-icon(icon="edit-2-outline")
+                      slot &nbsp;{{ $t('strings.edit') }}
+                    vm-dropdown-item.d-flex.justify-content-between(v-if="data[indextr]['status'] == 'Inactivo'" @click="setActionRecord(data[indextr], 'actived')")
+                      vm-icon(icon="person-done-outline")
+                      slot &nbsp;{{ $t('strings.action_active') }}
+                    vm-dropdown-item.d-flex.justify-content-between(v-if="data[indextr]['status'] == 'Activo'" @click="setActionRecord(data[indextr], 'inactived')")
+                      vm-icon(icon="person-delete-outline")
+                      slot &nbsp;{{ $t('strings.action_inactive') }}
+                    vm-dropdown-item.d-flex.justify-content-between(v-if="data[indextr]['status'] === 'Inactivo'" @click="deleteRecordConfirm(data[indextr])")
+                      vm-icon(icon="trash-2-outline")
+                      slot &nbsp;{{ $t('strings.delete') }}
+                    //- More actions
+          vm-pagination(:total="pagination.totalPages" v-model="currentPage" goto)
+          transition(name="enter")
+            .total-records(v-if="total>0") Total: {{ total | currency }}
+</template>
+
+<script>
+import ViewMixinMaster1 from '@/mixins/ViewMixinMaster1'
+import { createNamespacedHelpers } from 'vuex'
+const { mapGetters, mapActions } = createNamespacedHelpers('{{ model }}')
+const ModalImport = () => import('@/components/modals/ModalImport.vue')
+const Modal{{ model }} = () => import('@/components/modals/Modal{{ model }}.vue')
+
+export default {
+  name: '{{ model }}',
+  components: {
+    ModalImport,
+    Modal{{ model }}
+  },
+  mixins: [ViewMixinMaster1],
+  data: () => ({
+    columns: ['name', 'email', 'role', 'status', 'created_at'],
+    columnsOrderBy: ['name', 'email'],
+    attributeModal: 'name',
+    status: [],
+    filters: {
+      // Nota: Estos campos se parsearan en el v-model de los filtros. Ver linea 60
+      where: {
+        name: '',
+        email: '',
+        param: ''
+      },
+      whereIn: {
+        // Agrega las columnas que se filtraran con mas de una opcion ejemplo: status: []
+      },
+      whereBetween: {
+        // Agrega las columnas que se filtraran entre paramentros ejemplo: priece: []
+      },
+      betweenDates: {
+        created_at: []
+      },
+      orderBy: ''
+    }
+  }),
+  computed: {
+    ...mapGetters(['{{ model }}', 'catalog', 'pagination', 'filterParams']),
+    enabledDelete () {
+      return this.selected.length > 0 && this.selected.every(el => el.deleted_at)
+    }
+  },
+  methods: {
+    ...mapActions([
+      'updateRecord',
+      'deleteRecord',
+      'deleteRecords',
+      'loadRecords',
+      'loadCatalog',
+      'actionRecord',
+      'setModalVisible',
+      'setModalImportVisible',
+      'exportRecords',
+      'applyFilter',
+      'clearFilter'
+    ]),
+    colorRole (code) {
+      return code === 'Admin' ? 'primary' : 'success'
+    },
+    colorStatus (code) {
+      return code.trim() === 'Activo' ? 'success' : '#afbbc6'
+    }
+  }
+}
+</script>
+
+<style lang="scss">
+.filters {
+  .filter {
+    padding: 5px 10px;
+    width: 250px;
+  }
+}
+.con-vm-tooltip {
+  display: inline-block;
+  position: relative;
+}
+.vm-table--header {
+  padding: 10px;
+  span:nth-child(1) {
+    width: 100%;
+  }
+  .input-select-con {
+    span {
+      width: auto !important;
+    }
+  }
+  .justify-content-between {
+    div:last-child {
+      .vm-button {
+        margin: 0 3px;
+      }
+      .vm-con-dropdown {
+        float: left;
+      }
+      .con-select {
+        display: inline-block;
+        input {
+          height: 32px;
+        }
+      }
+    }
+  }
+}
+</style>
