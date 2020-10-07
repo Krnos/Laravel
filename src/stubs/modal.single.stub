@@ -1,0 +1,44 @@
+<template lang="pug">
+  vm-prompt(@vm-cancel="close" @vm-accept="saveRecord" @vm-close="close" @vm-action="deleteRecordConfirm(form)" :vm-action="form.deleted_at" :vm-action-text="$t('strings.delete')" :vm-accept-text="$t('strings.accept')" :vm-cancel-text="$t('strings.cancel')" :vm-buttons-hidden="form.deleted_at" :vm-is-valid="!$v.form.$invalid" :vm-active="isModalVisible" :vm-title='getTitle')
+    vm-row(vm-align="center" vm-type="flex" vm-justify="space-between" vm-w="12" v-shortcuts="[{ shortcut: [ 'enter', ], callback: saveRecord, push: true, focus: true, disabled: $v.form.$invalid },]")
+      vm-col(vm-justify="center", vm-align="center", vm-w=12)
+        b-form-group
+          vm-input(autofocus :placeholder='$t("{{ modelVariablePlural }}.name_placeholder")' :danger="$v.form.name.$invalid && $v.form.name.$model" :danger-text="$t('validation.required', { attribute: $t('{{ modelVariablePlural }}.name') })" v-model="form.name" :label='$t("{{ modelVariablePlural }}.name")')
+</template>
+
+<script>
+import ModalMixin1 from '@/mixins/ModalMixin1'
+import { required } from 'vuelidate/lib/validators' // Ver documentacion
+import { createNamespacedHelpers } from 'vuex'
+const { mapGetters, mapActions } = createNamespacedHelpers('{{ modelPlural }}')
+
+export default {
+  name: 'Modal{{ modelPlural }}',
+  mixins: [ModalMixin1],
+  // data: () => ({}),
+  validations () {
+    return {
+      form: {
+        name: {
+          required
+        }
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(['isModalVisible', 'catalog'])
+  },
+  async created () {
+    this.getCatalog()
+  },
+  methods: {
+    ...mapActions([
+      'addRecord',
+      'editRecord',
+      'deleteRecord',
+      'setModalVisible',
+      'loadCatalog'
+    ])
+  }
+}
+</script>

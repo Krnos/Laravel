@@ -7,30 +7,28 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;
 
-class ControllerMakeCommand extends GeneratorCommand
+class ModuleMakeCommand extends GeneratorCommand
 {
-    use WithModelStub;
-
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'component:view';
+    protected $name = 'component:module';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new view';
+    protected $description = 'Create a new module store';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'View';
+    protected $type = 'module';
 
     /**
      * Get the stub file for the generator.
@@ -39,7 +37,7 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__ . '/../stubs/view.single.stub';
+        return __DIR__ . '/../stubs/module.single.stub';
     }
 
     /**
@@ -58,13 +56,12 @@ class ControllerMakeCommand extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param  string $rootNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\..\frontend\src\views';
+        return $rootNamespace . '\..\frontend\src\store\modules';
     }
 
     /**
@@ -110,6 +107,6 @@ class ControllerMakeCommand extends GeneratorCommand
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', Str::plural($name));
 
-        return $this->laravel['path'].'/'.str_replace('\\', '/', $name).'.vue';
+        return $this->laravel['path'].'/'.str_replace('\\', '/', $name).'.js';
     }
 }

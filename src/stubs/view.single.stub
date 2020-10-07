@@ -1,13 +1,13 @@
 <template lang="pug">
   .crud(v-shortcuts="[{ shortcut: [ 'c', ], callback: addRecord, push: true, focus: true },{ shortcut: [ 'e', ], callback: editShortcut, push: true, focus: true },{ shortcut: [ 'f', ], callback: setFocusSearch, push: true, focus: true },]")
-    modal-import(model="{{ model }}")
-    modal-{{ model }}(:form='form', :is-add='isModalAdd')
+    modal-import(model="{{ modelVariablePlural }}")
+    modal-{{ modelVariablePlural }}(:form='form', :is-add='isModalAdd')
     .container-fluid
       vm-row.heading(vm-w="12")
         vm-col(vm-type="flex" vm-align="center" vm-lg=6 vm-sm=6)
           div
-            h2 {{ $t('strings.{{ model }}') }}:
-            span {{ $t('strings.description', {attribute: $t('strings.{{ model }}')}) }}
+            h2 {{ $t('strings.{{ modelVariablePlural }}') }}:
+            span {{ $t('strings.description', {attribute: $t('strings.{{ modelVariablePlural }}')}) }}
           div(style="display:none;")
             vm-button(type="default" icon="list")
             vm-button(type="default" icon="grid" color="rgba(var(--gray),1)")
@@ -19,7 +19,7 @@
                 vm-button(type="border" icon="more-horizotnal" color="#afbbc6")
 
                 vm-dropdown-menu
-                  vm-dropdown-item.d-flex.justify-content-between(v-if="$auth.check('Admin')" @click="exportRecords")
+                  vm-dropdown-item.d-flex.justify-content-between(@click="exportRecords")
                     vm-icon(icon="download-outline")
                     slot &nbsp;{{ $t('strings.export') }}
                   vm-dropdown-item.d-flex.justify-content-between(@click="setModalImportVisible")
@@ -32,12 +32,12 @@
                       Agrega mas acciones para colecciones de datos
       vm-row(vm-w="12")
         vm-col.card(vm-sm=12)
-          vm-table(multiple v-model="selected"  max-height="350px" :data="{{ model }}" )
+          vm-table(multiple v-model="selected"  max-height="350px" :data="{{ modelVariablePlural }}" )
             template(slot="header")
               .d-flex.justify-content-between
                 vm-input(ref="search" icon="search" size="small" :placeholder="searchPlaceholder" v-model="filters.where.param" @keyup.enter="applyFilter(filters)" width="300px")
                 div
-                  vm-order-by(:sort-by-text="$t('strings.order_by')" placeholder="Ninguno" :data="columnsOrderBy" v-model="filters.orderBy" @change="applyFilter(filters)" size="small" width="200px" :serializer="item => $t('{{ model }}.'+ item)")
+                  vm-order-by(:sort-by-text="$t('strings.order_by')" placeholder="Ninguno" :data="columnsOrderBy" v-model="filters.orderBy" @change="applyFilter(filters)" size="small" width="200px" :serializer="item => $t('{{ modelVariablePlural }}.'+ item)")
                   vm-tooltip(:text="$t('strings.filters')" delay=".5s")
                     vm-dropdown(ref="dropdown" vm-custom-content vm-trigger-click vm-trigger-outside-click)
                       vm-button(type="default" icon="funnel-outline" size="small")
@@ -46,7 +46,7 @@
                         .heading.d-flex.justify-content-between
                           h4 {{ $t('strings.filters') }}
                           vm-button(type="flat" size="small" @click="clearFilter") {{ $t('strings.clear') }}
-                        vm-date-picker.filter(type="daterange" :label="$t('{{ model }}.created_at')" :placeholder="$t('strings.select_date')" @on-change="handleChange" :value="filters.betweenDates.created_at")
+                        vm-date-picker.filter(type="daterange" :label="$t('{{ modelVariablePlural }}.created_at')" :placeholder="$t('strings.select_date')" @on-change="handleChange" :value="filters.betweenDates.created_at")
                         //- Add filters
                             Agrega los filtros que prefieras por ejemplo:
                             vm-select.filter(:placeholder="$t('strings.multiple')" multiple autocomplete label="Status" v-model="filters.whereIn.status")
@@ -60,7 +60,7 @@
                   vm-tooltip(:text="$t('strings.display_grid')" delay=".5s")
                     vm-button(type="default" size="small" icon="grid" color="rgba(var(--gray),1)" style="display: none;")
             template(slot="thead")
-              vm-th(:key="index" v-if="column !== 'id'" v-for="(column, index) in columns") {{ $t('{{ model }}.' + column) }}
+              vm-th(:key="index" v-if="column !== 'id'" v-for="(column, index) in columns") {{ $t('{{ modelVariablePlural }}.' + column) }}
             template(slot-scope="{data}")
               vm-tr(:data="tr" :key="indextr" v-for="(tr, indextr) in data")
                 vm-td(:data="data[indextr][column]" :key="index" v-if="column !== 'id'" v-for="(column, index) in columns")
@@ -79,9 +79,6 @@
                     vm-dropdown-item.d-flex.justify-content-between(v-if="data[indextr]['status'] == 'Inactivo'" @click="setActionRecord(data[indextr], 'actived')")
                       vm-icon(icon="person-done-outline")
                       slot &nbsp;{{ $t('strings.action_active') }}
-                    vm-dropdown-item.d-flex.justify-content-between(v-if="data[indextr]['status'] == 'Activo'" @click="setActionRecord(data[indextr], 'inactived')")
-                      vm-icon(icon="person-delete-outline")
-                      slot &nbsp;{{ $t('strings.action_inactive') }}
                     vm-dropdown-item.d-flex.justify-content-between(v-if="data[indextr]['status'] === 'Inactivo'" @click="deleteRecordConfirm(data[indextr])")
                       vm-icon(icon="trash-2-outline")
                       slot &nbsp;{{ $t('strings.delete') }}
@@ -94,15 +91,15 @@
 <script>
 import ViewMixinMaster1 from '@/mixins/ViewMixinMaster1'
 import { createNamespacedHelpers } from 'vuex'
-const { mapGetters, mapActions } = createNamespacedHelpers('{{ model }}')
+const { mapGetters, mapActions } = createNamespacedHelpers('{{ modelPlural }}')
 const ModalImport = () => import('@/components/modals/ModalImport.vue')
-const Modal{{ model }} = () => import('@/components/modals/Modal{{ model }}.vue')
+const Modal{{ modelPlural }} = () => import('@/components/modals/Modal{{ modelPlural }}.vue')
 
 export default {
-  name: '{{ model }}',
+  name: '{{ modelPlural }}',
   components: {
     ModalImport,
-    Modal{{ model }}
+    Modal{{ modelPlural }}
   },
   mixins: [ViewMixinMaster1],
   data: () => ({
@@ -111,7 +108,7 @@ export default {
     attributeModal: 'name',
     status: [],
     filters: {
-      // Nota: Estos campos se parsearan en el v-model de los filtros. Ver linea 60
+      // Nota: Estos campos se parsearan en el v-model de los filtros. Ver linea 49
       where: {
         name: '',
         email: '',
@@ -130,10 +127,7 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters(['{{ model }}', 'catalog', 'pagination', 'filterParams']),
-    enabledDelete () {
-      return this.selected.length > 0 && this.selected.every(el => el.deleted_at)
-    }
+    ...mapGetters(['{{ modelVariablePlural }}', 'catalog', 'pagination', 'filterParams'])
   },
   methods: {
     ...mapActions([
@@ -148,13 +142,7 @@ export default {
       'exportRecords',
       'applyFilter',
       'clearFilter'
-    ]),
-    colorRole (code) {
-      return code === 'Admin' ? 'primary' : 'success'
-    },
-    colorStatus (code) {
-      return code.trim() === 'Activo' ? 'success' : '#afbbc6'
-    }
+    ])
   }
 }
 </script>

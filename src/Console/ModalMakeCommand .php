@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;
 
-class ControllerMakeCommand extends GeneratorCommand
+class ModalMakeCommand extends GeneratorCommand
 {
     use WithModelStub;
 
@@ -16,21 +16,21 @@ class ControllerMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'component:view';
+    protected $name = 'component:modal';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new view';
+    protected $description = 'Create a new modal';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'View';
+    protected $type = 'modal';
 
     /**
      * Get the stub file for the generator.
@@ -39,7 +39,7 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__ . '/../stubs/view.single.stub';
+        return __DIR__ . '/../stubs/modal.single.stub';
     }
 
     /**
@@ -64,7 +64,7 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\..\frontend\src\views';
+        return $rootNamespace . '\..\frontend\src\components\modals';
     }
 
     /**
@@ -108,8 +108,8 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        $name = Str::replaceFirst($this->rootNamespace(), '', Str::plural($name));
+        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
-        return $this->laravel['path'].'/'.str_replace('\\', '/', $name).'.vue';
+        return $this->laravel['path'].'/'.str_replace('\\', '/', 'Modal'.$name).'.vue';
     }
 }
