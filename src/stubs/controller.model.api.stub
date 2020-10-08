@@ -21,7 +21,7 @@ class {{ class }} extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index({{ model }}Request $request)
+    public function index(Request $request)
     {
         $queryBuilder = new QueryBuilder(new {{ model }}, $request);
 
