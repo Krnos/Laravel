@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;
 
-class ControllerMakeCommand extends GeneratorCommand
+class ViewMakeCommand extends GeneratorCommand
 {
     use WithModelStub;
 
