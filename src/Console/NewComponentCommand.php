@@ -212,7 +212,7 @@ class NewComponentCommand extends GeneratorCommand
         $modal = Str::studly(class_basename($this->argument('name')));
 
         $this->call('component:modal', [
-            'name' => "{$modal}",
+            'name' => "Modal{$modal}",
             '--model' => $modal,
         ]);
     }

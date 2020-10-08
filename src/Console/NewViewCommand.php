@@ -14,7 +14,7 @@ class NewViewCommand extends Command
      * @var string
      */
     protected $signature = 'view:new {name}';
-  
+
     /**
      * The console command description.
      *
@@ -36,10 +36,6 @@ class NewViewCommand extends Command
      */
     public function handle()
     {
-        if (parent::handle() === false) {
-            return false;
-        }
-
         $this->createView();
 
         $this->createModal();
@@ -72,7 +68,7 @@ class NewViewCommand extends Command
         $modal = Str::studly(class_basename($this->argument('name')));
 
         $this->call('component:modal', [
-            'name' => "{$modal}",
+            'name' => "Modal{$modal}",
             '--model' => $modal,
         ]);
     }

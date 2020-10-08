@@ -9,6 +9,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 class ModuleMakeCommand extends GeneratorCommand
 {
+    use WithModelStub;
+
     /**
      * The console command name.
      *
@@ -28,7 +30,7 @@ class ModuleMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $type = 'module';
+    protected $type = 'Module';
 
     /**
      * Get the stub file for the generator.

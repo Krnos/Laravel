@@ -30,7 +30,7 @@ class ModalMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $type = 'modal';
+    protected $type = 'Modal';
 
     /**
      * Get the stub file for the generator.
@@ -108,8 +108,8 @@ class ModalMakeCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        $name = Str::replaceFirst($this->rootNamespace(), '', $name);
+        $name = Str::replaceFirst($this->rootNamespace(), '', Str::plural($name));
 
-        return $this->laravel['path'].'/'.str_replace('\\', '/', 'Modal'.$name).'.vue';
+        return $this->laravel['path'].'/'.str_replace('\\', '/', $name).'.vue';
     }
 }
