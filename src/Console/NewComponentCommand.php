@@ -55,6 +55,12 @@ class NewComponentCommand extends GeneratorCommand
         $this->createTest();
 
         $this->createController();
+
+        $this->createView();
+
+        $this->createModal();
+
+        $this->createModule();
     }
 
     /**
@@ -178,6 +184,51 @@ class NewComponentCommand extends GeneratorCommand
 
         $this->call('make:test', [
             'name' => "{$test}ControllerTest",
+        ]);
+    }
+
+    /**
+     * Create a view file for the model.
+     *
+     * @return void
+     */
+    protected function createView()
+    {
+        $view = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('component:view', [
+            'name' => "{$view}",
+            '--model' => $view,
+        ]);
+    }
+
+    /**
+     * Create a modal file for the model.
+     *
+     * @return void
+     */
+    protected function createModal()
+    {
+        $modal = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('component:modal', [
+            'name' => "{$modal}",
+            '--model' => $modal,
+        ]);
+    }
+
+    /**
+     * Create a module file for the model.
+     *
+     * @return void
+     */
+    protected function createModule()
+    {
+        $module = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('component:module', [
+            'name' => "{$module}",
+            '--model' => $module,
         ]);
     }
 
