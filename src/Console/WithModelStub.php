@@ -25,10 +25,14 @@ trait WithModelStub
             '{{model}}' => class_basename($modelClass),
             '{{ modelPlural }}' => Str::plural(class_basename($modelClass)),
             '{{modelPlural}}' => Str::plural(class_basename($modelClass)),
+            '{{ modelVariableCamel }}' => lcfirst(Str::plural(class_basename($modelClass))),
+            '{{modelVariableCamel}}' => lcfirst(Str::plural(class_basename($modelClass))),
             '{{ modelVariable }}' => lcfirst(class_basename($modelClass)),
             '{{modelVariable}}' => lcfirst(class_basename($modelClass)),
             '{{ modelVariablePlural }}' => Str::plural(Str::snake(class_basename($modelClass))),
             '{{modelVariablePlural}}' => Str::plural(Str::snake(class_basename($modelClass))),
+            '{{ modelVariableParam }}' => Str::plural(Str::kebab(class_basename($modelClass))),
+            '{{modelVariableParam}}' => Str::plural(Str::kebab(class_basename($modelClass))),
         ]);
     }
 

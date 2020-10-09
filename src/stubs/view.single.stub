@@ -1,7 +1,7 @@
 <template lang="pug">
   .crud(v-shortcuts="[{ shortcut: [ 'c', ], callback: addRecord, push: true, focus: true },{ shortcut: [ 'e', ], callback: editShortcut, push: true, focus: true },{ shortcut: [ 'f', ], callback: setFocusSearch, push: true, focus: true },]")
     modal-import(model="{{ modelVariablePlural }}")
-    modal-{{ modelVariablePlural }}(:form='form', :is-add='isModalAdd')
+    modal-{{ modelVariableParam }}(:form='form', :is-add='isModalAdd')
     .container-fluid
       vm-row.heading(vm-w="12")
         vm-col(vm-type="flex" vm-align="center" vm-lg=6 vm-sm=6)
@@ -32,7 +32,7 @@
                       Agrega mas acciones para colecciones de datos
       vm-row(vm-w="12")
         vm-col.card(vm-sm=12)
-          vm-table(multiple v-model="selected"  max-height="350px" :data="{{ modelVariablePlural }}" )
+          vm-table(multiple v-model="selected"  max-height="350px" :data="{{ modelVariableCamel }}" )
             template(slot="header")
               .d-flex.justify-content-between
                 vm-input(ref="search" icon="search" size="small" :placeholder="searchPlaceholder" v-model="filters.where.param" @keyup.enter="applyFilter(filters)" width="300px")
@@ -127,7 +127,7 @@ export default {
     }
   }),
   computed: {
-    ...mapGetters(['{{ modelVariablePlural }}', 'catalog', 'pagination', 'filterParams'])
+    ...mapGetters(['{{ modelVariableCamel }}', 'catalog', 'pagination', 'filterParams'])
   },
   methods: {
     ...mapActions([
