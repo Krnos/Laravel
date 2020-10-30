@@ -4,7 +4,6 @@ namespace Krnos\Laravel\Console;
 
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;
 
 class ModuleMakeCommand extends GeneratorCommand
