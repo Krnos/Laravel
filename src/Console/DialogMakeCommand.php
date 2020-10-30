@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 
-class ModalMakeCommand extends GeneratorCommand
+class DialogMakeCommand extends GeneratorCommand
 {
     use WithModelStub;
 
