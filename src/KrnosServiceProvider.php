@@ -12,6 +12,7 @@ use Krnos\Laravel\Console\NewComponentCommand;
 use Krnos\Laravel\Console\NewViewCommand;
 use Krnos\Laravel\Console\RequestMakeCommand;
 use Krnos\Laravel\Console\ViewMakeCommand;
+use Krnos\Laravel\Console\ReplaceLinesCommand;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
 
@@ -36,6 +37,7 @@ class KrnosServiceProvider extends ServiceProvider implements DeferrableProvider
                 NewViewCommand::class,
                 RequestMakeCommand::class,
                 ViewMakeCommand::class,
+                ReplaceLinesCommand::class,
             ]);
         }
     }

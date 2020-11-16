@@ -61,6 +61,8 @@ class NewComponentCommand extends GeneratorCommand
         $this->createModal();
 
         $this->createModule();
+
+        $this->replaceLines();
     }
 
     /**
@@ -228,6 +230,20 @@ class NewComponentCommand extends GeneratorCommand
 
         $this->call('component:module', [
             'name' => "{$module}",
+            '--model' => $module,
+        ]);
+    }
+
+    /**
+     * Replace lines of files.
+     *
+     * @return void
+     */
+    protected function replaceLines()
+    {
+        $module = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('replace:lines', [
             '--model' => $module,
         ]);
     }

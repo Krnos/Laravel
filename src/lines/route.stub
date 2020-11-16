@@ -1,0 +1,18 @@
+    {
+      path: '/{{ modelVariablePlural }}',
+      name: '{{ modelVariablePlural }}',
+      component: () => import(/* webpackChunkName: "{{ modelVariablePlural }}" */ '@/views/{{ modelPlural }}.vue'),
+      meta: {
+        title: Vue.i18n.translate('strings.{{ modelVariablePlural }}', null),
+        auth: {
+          roles: 'Admin',
+          forbiddenRedirect: '/'
+        }
+      },
+      children: [{
+        path: ':id',
+        name: 'applicationDetail',
+        component: () => import(/* webpackChunkName: "{{ modelVariablePlural }}" */ '@/views/{{ modelPlural }}.vue')
+      }]
+    },
+    // New Route

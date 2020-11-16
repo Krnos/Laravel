@@ -1,0 +1,9 @@
+      [
+          'name' => 'strings.{{ modelVariablePlural }}',
+          'icon' => 'people-outline',
+          'link' => '/{{ modelVariablePlural }}',
+          'permissions' => [
+            '{{ modelVariablePlural }}.index'
+          ],
+      ],
+      // New MenuItem
