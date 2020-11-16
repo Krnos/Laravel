@@ -22,7 +22,7 @@ class ReplaceLinesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'replace:lines';
+    protected $name = 'replace:lines';
 
     /**
      * The console command description.
@@ -135,12 +135,7 @@ class ReplaceLinesCommand extends Command
      */
     protected function replaceFile($tag, $stub, $file)
     {
-
-        return str_replace(
-            $tag,
-            $stub,
-            $file
-        );
+        return str_replace($tag, $stub, $file);
     }
 
     /**
@@ -151,7 +146,7 @@ class ReplaceLinesCommand extends Command
      */
     protected function getPath($name)
     {
-        return $this->laravel['path'].'/'.$name;
+        return $this->laravel['path'].'/../'.$name;
     }
 
     /**
@@ -182,7 +177,7 @@ class ReplaceLinesCommand extends Command
     protected function getOptions()
     {
         return [
-            ['model', InputOption::REQUIRED, 'The name of the model'],
+            ['model', 'm', InputOption::VALUE_REQUIRED, 'The name of the model'],
         ];
     }
 }

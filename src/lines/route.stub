@@ -1,4 +1,4 @@
-    {
+{
       path: '/{{ modelVariablePlural }}',
       name: '{{ modelVariablePlural }}',
       component: () => import(/* webpackChunkName: "{{ modelVariablePlural }}" */ '@/views/{{ modelPlural }}.vue'),
@@ -11,7 +11,7 @@
       },
       children: [{
         path: ':id',
-        name: 'applicationDetail',
+        name: '{{ modelVariableCamel }}Detail',
         component: () => import(/* webpackChunkName: "{{ modelVariablePlural }}" */ '@/views/{{ modelPlural }}.vue')
       }]
     },
