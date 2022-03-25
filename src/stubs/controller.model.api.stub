@@ -21,7 +21,7 @@ class {{ class }} extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $queryBuilder = new QueryBuilder(new {{ model }}, $request);
 
@@ -35,7 +35,7 @@ class {{ class }} extends Controller
      * @param  {{ rootNamespace }}Http\Requests\{{ model }}Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store({{ model }}Request $request)
+    public function store({{ model }}Request $request): JsonResponse
     {
         return response()->json(tap(new {{ model }}($request->all())), 201);
     }
@@ -46,7 +46,7 @@ class {{ class }} extends Controller
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
-    public function show({{ model }} ${{ modelVariable }})
+    public function show({{ model }} ${{ modelVariable }}): JsonResponse
     {
         return response()->json(['status'=>'ok','data'=>${{ modelVariable }}],200);
     }
@@ -58,7 +58,7 @@ class {{ class }} extends Controller
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
-    public function update({{ model }}Request $request, {{ model }} ${{ modelVariable }})
+    public function update({{ model }}Request $request, {{ model }} ${{ modelVariable }}): JsonResponse
     {
         return tap(${{ modelVariable }})->update($request->all());
     }
@@ -69,7 +69,7 @@ class {{ class }} extends Controller
      * @param  \{{ namespacedModel }}  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
-    public function destroy({{ model }} ${{ modelVariable }})
+    public function destroy({{ model }} ${{ modelVariable }}): JsonResponse
     {
         ${{ modelVariable }}->delete();
         return response()->json(['code'=>204,'message'=>__('strings.deleted_successfully')],204);
@@ -81,7 +81,7 @@ class {{ class }} extends Controller
      * @param  {{ rootNamespace }}Http\Requests\{{ model }}Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroyMany({{ model }}Request $request)
+    public function destroyMany({{ model }}Request $request): JsonResponse
     {
         foreach ($request->input('ids') as $id) {
             ${{ modelVariable }}={{ model }}::find($id);
@@ -118,7 +118,7 @@ class {{ class }} extends Controller
      * @param  {{ rootNamespace }}Http\Requests\ImportRequest $request
      * @return PDF CSV or XLS
      */
-    public function import(ImportRequest $request, Excel $excel)
+    public function import(ImportRequest $request, Excel $excel): JsonResponse
     {
         $excel->import(new {{ model }}Import(auth()->user()), $request->file('importFile'));
 
