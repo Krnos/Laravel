@@ -244,15 +244,16 @@ class NewComponentCommand extends GeneratorCommand
     protected function createLang()
     {
         $model = Str::studly(class_basename($this->argument('name')));
+        $file = Str::snake(class_basename($this->argument('name')));
 
         $this->call('component:lang', [
-            'name' => "{$model}",
+            'name' => "{$file}",
             '--model' => $model,
             '--lang' => 'es',
         ]);
 
         $this->call('component:lang', [
-            'name' => "{$model}",
+            'name' => "{$file}",
             '--model' => $model,
             '--lang' => 'en',
         ]);

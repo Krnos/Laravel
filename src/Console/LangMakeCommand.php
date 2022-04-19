@@ -80,7 +80,7 @@ class LangMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['lang', 'l', InputOption::VALUE_NONE, 'indicate the language of the generated file.'],
+            ['lang', 'l', InputOption::VALUE_OPTIONAL, 'indicate the language of the generated file.'],
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a resource lang for the given model.'],
         ];
     }
@@ -93,7 +93,7 @@ class LangMakeCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        $name = Str::replaceFirst($this->rootNamespace(), '', Str::snake(Str::plural($name)));
+        $name = Str::replaceFirst($this->rootNamespace(), '', Str::plural($name));
 
         return $this->laravel['path'].'/'.str_replace('\\', '/', $name).'.php';
     }
