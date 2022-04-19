@@ -62,6 +62,8 @@ class NewComponentCommand extends GeneratorCommand
 
         $this->createModule();
 
+        $this->createLang();
+
         $this->replaceLines();
     }
 
@@ -231,6 +233,28 @@ class NewComponentCommand extends GeneratorCommand
         $this->call('component:module', [
             'name' => "{$module}",
             '--model' => $module,
+        ]);
+    }
+
+    /**
+     * Create a lang file for the model.
+     *
+     * @return void
+     */
+    protected function createModule()
+    {
+        $model = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('component:lang', [
+            'name' => "{$model}",
+            '--model' => $model,
+            '--lang' => 'es',
+        ]);
+
+        $this->call('component:lang', [
+            'name' => "{$model}",
+            '--model' => $model,
+            '--lang' => 'en',
         ]);
     }
 
