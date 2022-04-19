@@ -8,6 +8,7 @@ use Krnos\Laravel\Console\ImportMakeCommand;
 use Krnos\Laravel\Console\DialogMakeCommand;
 use Krnos\Laravel\Console\ModelMakeCommand;
 use Krnos\Laravel\Console\ModuleMakeCommand;
+use Krnos\Laravel\Console\LangMakeCommand;
 use Krnos\Laravel\Console\NewComponentCommand;
 use Krnos\Laravel\Console\NewViewCommand;
 use Krnos\Laravel\Console\RequestMakeCommand;
@@ -33,6 +34,7 @@ class KrnosServiceProvider extends ServiceProvider implements DeferrableProvider
                 DialogMakeCommand::class,
                 ModelMakeCommand::class,
                 ModuleMakeCommand::class,
+                LangMakeCommand::class,
                 NewComponentCommand::class,
                 NewViewCommand::class,
                 RequestMakeCommand::class,
