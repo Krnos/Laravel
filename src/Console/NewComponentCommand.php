@@ -241,7 +241,7 @@ class NewComponentCommand extends GeneratorCommand
      *
      * @return void
      */
-    protected function createModule()
+    protected function createLang()
     {
         $model = Str::studly(class_basename($this->argument('name')));
 
