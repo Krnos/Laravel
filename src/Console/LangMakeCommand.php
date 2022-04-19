@@ -93,7 +93,7 @@ class LangMakeCommand extends GeneratorCommand
      */
     protected function getPath($name)
     {
-        $name = Str::replaceFirst($this->rootNamespace(), '', Str::plural($name));
+        $name = Str::replaceFirst($this->rootNamespace(), '', Str::plural(Str::snake($name)));
 
         return $this->laravel['path'].'/'.str_replace('\\', '/', $name).'.php';
     }
