@@ -58,7 +58,7 @@ trait WithModelStub
             return $model;
         }
 
-        $model = $rootNamespace . 'Models\\' . $model
+        $model = $rootNamespace . 'Models\\' . $model;
 
         return $model;
     }
