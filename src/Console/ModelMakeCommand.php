@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 class ModelMakeCommand extends GeneratorCommand
 {
+    use WithModelStub;
    /**
      * The console command name.
      *
