@@ -46,11 +46,15 @@ class NewComponentCommand extends GeneratorCommand
 
         $this->createSeeder();
 
-        $this->createRequest();
+        $this->createRequest('create');
+
+        $this->createRequest('update');
 
         $this->createExport();
 
         $this->createImport();
+
+        $this->createPolicy();
 
         $this->createTest();
 
@@ -116,13 +120,14 @@ class NewComponentCommand extends GeneratorCommand
      *
      * @return void
      */
-    protected function createRequest()
+    protected function createRequest($type)
     {
         $request = Str::studly(class_basename($this->argument('name')));
 
         $this->call('component:request', [
             'name' => "{$request}Request",
             '--model' => $request,
+            '--type' => $type,
         ]);
     }
 
@@ -156,6 +161,23 @@ class NewComponentCommand extends GeneratorCommand
 
         $this->call('component:import', [
             'name' => "{$import}Import",
+            '--model' => $modelName,
+        ]);
+    }
+
+    /**
+     * Create a policy file for the model.
+     *
+     * @return void
+     */
+    protected function createPolicy()
+    {
+        $policy = Str::studly(class_basename($this->argument('name')));
+
+        $modelName = $this->qualifyClass($this->getNameInput());
+
+        $this->call('component:policy', [
+            'name' => "{$policy}Policy",
             '--model' => $modelName,
         ]);
     }

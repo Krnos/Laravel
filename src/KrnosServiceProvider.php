@@ -32,6 +32,7 @@ class KrnosServiceProvider extends ServiceProvider implements DeferrableProvider
                 ControllerMakeCommand::class,
                 ExportMakeCommand::class,
                 ImportMakeCommand::class,
+                PolicyMakeCommand::class,
                 DialogMakeCommand::class,
                 ModelMakeCommand::class,
                 ModuleMakeCommand::class,

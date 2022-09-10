@@ -2,6 +2,7 @@
 
 namespace {{ namespace }};
 
+use App\Models\{{ model }};
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 
@@ -14,14 +15,7 @@ class {{ class }} extends FormRequest
      */
     public function authorize()
     {
-        switch ($this->method()) {
-          case 'POST':
-            return $this->user()->hasPermissionTo('{{ modelVariable }}.store');
-          case 'PUT':
-            return $this->user()->hasPermissionTo('{{ modelVariable }}.update');
-          case 'DELETE':
-            return $this->user()->hasPermissionTo('{{ modelVariable }}.destroy');
-        }
+       return $this->user()->can({{ type }},  {{ model }}::class);
     }
 
     /**
@@ -31,15 +25,11 @@ class {{ class }} extends FormRequest
      */
     public function rules()
     {
-        switch ($this->method()) {
-          case 'POST':
-            return [
-              'name' => 'required|string',
-            ];
-        }
+
         return [
-          //
+          'name' => 'required|string',
         ];
+
     }
 
     protected function failedAuthorization()

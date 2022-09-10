@@ -23,6 +23,8 @@ class {{ class }} extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        $this->authorize('viewAny', {{ model }}::class);
+
         $queryBuilder = new QueryBuilder(new {{ model }}, $request);
 
         return response()->json($queryBuilder->build()->paginate(20),200);
@@ -48,6 +50,7 @@ class {{ class }} extends Controller
      */
     public function show({{ model }} ${{ modelVariable }}): JsonResponse
     {
+        $this->authorize('view', {{ model }}::class);
         return response()->json(['status'=>'ok','data'=>${{ modelVariable }}],200);
     }
 
@@ -71,6 +74,7 @@ class {{ class }} extends Controller
      */
     public function destroy({{ model }} ${{ modelVariable }}): JsonResponse
     {
+        $this->authorize('delete', ${{ modelVariable }});
         ${{ modelVariable }}->delete();
         return response()->json(['code'=>204,'message'=>__('strings.deleted_successfully')],204);
     }
@@ -89,6 +93,7 @@ class {{ class }} extends Controller
             if (!${{ modelVariable }}) {
                 return response()->json(['errors'=>array(['code'=>404,'message'=>__('{{ modelVariablePlural }}.not_find')])],404);
             }
+            $this->authorize('delete', ${{ modelVariable }});
         }
 
         foreach ($request->input('ids') as $id) {
@@ -107,6 +112,7 @@ class {{ class }} extends Controller
      */
     public function export(ExportRequest $request, Excel $excel)
     {
+      $this->authorize('viewAny', {{ model }}::class);
       $file = '{{ modelVariablePlural }}.' . $request->input('format');
       $queryBuilder = new QueryBuilder(new {{ model }}, $request);
       return $excel->download(new {{ model }}Export($queryBuilder->build()->get()), $file);

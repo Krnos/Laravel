@@ -62,7 +62,7 @@ class RequestMakeCommand extends GeneratorCommand
     {
         $stub = $this->files->get($this->getStub());
 
-        return $this->replaceNamespace($stub, $name)->replaceModel($stub, $name)->replaceClass($stub, $name);
+        return $this->replaceNamespace($stub, $name)->replaceModel($stub, $name)->replaceType($stub)->replaceClass($stub, $name);
     }
 
     /**
@@ -80,6 +80,21 @@ class RequestMakeCommand extends GeneratorCommand
         return $this;
     }
 
+        /**
+     * Replace the class name for the given stub.
+     *
+     * @param  string  $stub
+     * @param  string  $name
+     * @return string
+     */
+    protected function replaceType(&$stub)
+    {
+        $type = Str::snake($this->option('type'));
+
+        $stub = str_replace(['{{ type }}', '{{type}}'], $type, $stub);
+        return $this;
+    }
+
     /**
      * Get the console command options.
      *
@@ -89,6 +104,7 @@ class RequestMakeCommand extends GeneratorCommand
     {
         return [
             ['model', 'm', InputOption::VALUE_OPTIONAL, 'Generate a form request for the given model.'],
+            ['type', 't', InputOption::VALUE_OPTIONAL, 'Generate a resource controller for the given type request.'],
         ];
     }
 
