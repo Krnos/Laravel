@@ -39,8 +39,7 @@ trait WithModelStub
     /**
      * Get the fully-qualified model class name.
      *
-     * @param  string $model
-     *
+     * @param  string  $model
      * @return string
      */
     protected function parseModel($model): string
@@ -49,11 +48,19 @@ trait WithModelStub
             throw new InvalidArgumentException('Model name contains invalid characters.');
         }
 
-        $model = trim(str_replace('/', '\\', $model), '\\');
+        $model = ltrim($model, '\\/');
 
-        if (!Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
-            $model = $rootNamespace . $model;
+        $model = str_replace('/', '\\', $model);
+
+        $rootNamespace = $this->rootNamespace();
+
+        if (Str::startsWith($model, $rootNamespace)) {
+            return $model;
         }
+
+        $model = is_dir(app_path('Models'))
+            ? $rootNamespace . 'Models\\' . $model
+            : $rootNamespace . $model;
 
         return $model;
     }

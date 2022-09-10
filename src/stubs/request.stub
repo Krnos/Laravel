@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use App\Models\{{ model }};
+use DummyFullModelClass;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 
@@ -15,7 +15,7 @@ class {{ class }} extends FormRequest
      */
     public function authorize()
     {
-       return $this->user()->can({{ type }},  {{ model }}::class);
+       return $this->user()->can('{{ type }}',  DummyModelClass::class);
     }
 
     /**

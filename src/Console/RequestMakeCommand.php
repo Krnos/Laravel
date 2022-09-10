@@ -8,6 +8,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 class RequestMakeCommand extends GeneratorCommand
 {
+    use WithModelStub;
+
     /**
      * The console command name.
      *
@@ -36,7 +38,7 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__ . '/../stubs/request.stub';
+        return $this->resolveStubPath('/../stubs/request.stub');
     }
 
     /**
@@ -89,7 +91,7 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected function replaceType(&$stub)
     {
-        $type = Str::snake($this->option('type'));
+        $type = $this->option('type');
 
         $stub = str_replace(['{{ type }}', '{{type}}'], $type, $stub);
         return $this;
