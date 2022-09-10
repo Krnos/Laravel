@@ -3,16 +3,16 @@
 namespace {{ namespace }};
 
 use {{ namespacedModel }};
-use {{ rootNamespace }}Http\Controllers\Controller;
-use {{ rootNamespace }}Http\Filters\QueryBuilder;
-use {{ rootNamespace }}Http\Requests\{{ model }}Request;
-use {{ rootNamespace }}Http\Requests\ExportRequest;
-use {{ rootNamespace }}Http\Requests\ImportRequest;
-use {{ rootNamespace }}Exports\{{ model }}Export;
-use {{ rootNamespace }}Imports\{{ model }}Import;
-use Maatwebsite\Excel\Excel;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
+use App\Exports\{{ model }}Export;
+use App\Imports\{{ model }}Import;
+use App\Http\Filters\QueryBuilder;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ExportRequest;
+use App\Http\Requests\ImportRequest;
+use App\Http\Requests\{{ model }}Request;
+use Illuminate\Database\Eloquent\Collection;
 
 class {{ class }} extends Controller
 {

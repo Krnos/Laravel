@@ -125,7 +125,7 @@ class NewComponentCommand extends GeneratorCommand
         $request = Str::studly(class_basename($this->argument('name')));
 
         $this->call('component:request', [
-            'name' => "{$request}Request",
+            'name' => "{$request}{$type == 'create' ? 'Store': 'Update'}Request",
             '--model' => $request,
             '--type' => $type,
         ]);
