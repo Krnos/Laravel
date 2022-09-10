@@ -12,6 +12,7 @@ use Krnos\Laravel\Console\DialogMakeCommand;
 use Krnos\Laravel\Console\ExportMakeCommand;
 use Krnos\Laravel\Console\ImportMakeCommand;
 use Krnos\Laravel\Console\ModuleMakeCommand;
+use Krnos\Laravel\Console\PolicyMakeCommand;
 use Krnos\Laravel\Console\RequestMakeCommand;
 use Krnos\Laravel\Console\NewComponentCommand;
 use Krnos\Laravel\Console\ReplaceLinesCommand;
