@@ -40,7 +40,7 @@ class ReplaceLinesCommand extends Command
         'app/Http/Controllers/IndexController.php',
         'routes/api.php',
         'frontend/src/router/index.js',
-        'database/seeds/PermissionsTableSeeder.php',
+        'database/seeders/PermissionsTableSeeder.php',
     ];
 
     /**
