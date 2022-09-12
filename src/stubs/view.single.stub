@@ -36,7 +36,7 @@
             template(slot="header")
               .d-flex.justify-content-between
                 vm-input(ref="search" icon="search" size="small" :placeholder="searchPlaceholder" v-model="filters.where.param" @keyup.enter="applyFilter(filters)" width="300px")
-                div
+                .d-flex.justify-content-between
                   vm-tooltip(:text="$t('strings.filters')" delay=".5s")
                     vm-dropdown(ref="dropdown" vm-custom-content vm-trigger-click vm-trigger-outside-click)
                       vm-button(type="default" icon="funnel-outline" size="small")
@@ -55,6 +55,8 @@
                         .filter.d-flex
                           vm-button(@click="applyFilter(filters)") {{ $t('strings.apply') }}
                   vm-order-by(:sort-by-text="$t('strings.order_by')" placeholder="Ninguno" :data="columnsOrderBy" v-model="filters.orderBy" @change="applyFilter(filters)" size="small" width="200px" :serializer="item => $t('{{ modelVariablePlural }}.'+ item)")
+                    template(slot-scope="{data}")
+                      vm-order-by-item(v-for="(item,index) in formattedData" :key="index" :value="item.value" :text="item.text" :direction="item.direction")
                   vm-tooltip(:text="$t('strings.display_list')" delay=".5s")
                     vm-button(type="default" size="small" icon="list" style="display: none;")
                   vm-tooltip(:text="$t('strings.display_grid')" delay=".5s")
