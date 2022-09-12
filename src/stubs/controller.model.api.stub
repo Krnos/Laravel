@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use {{ namespacedModel }};
+use DummyFullModelClass;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
 use App\Exports\{{ model }}Export;
@@ -11,7 +11,8 @@ use App\Http\Filters\QueryBuilder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExportRequest;
 use App\Http\Requests\ImportRequest;
-use App\Http\Requests\{{ model }}Request;
+use App\Http\Requests\{{ model }}\{{ model }}StoreRequest;
+use App\Http\Requests\{{ model }}\{{ model }}UpdateRequest;
 use Illuminate\Database\Eloquent\Collection;
 
 class {{ class }} extends Controller
@@ -34,10 +35,10 @@ class {{ class }} extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  {{ rootNamespace }}Http\Requests\{{ model }}Request  $request
+     * @param  \{{ rootNamespace }}Http\Requests\{{ model }}\{{ model }}StoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store({{ model }}Request $request): JsonResponse
+    public function store({{ model }}StoreRequest $request): JsonResponse
     {
         return response()->json(tap(new {{ model }}($request->all())), 201);
     }
@@ -45,7 +46,7 @@ class {{ class }} extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \DummyFullModelClass  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
     public function show({{ model }} ${{ modelVariable }}): JsonResponse
@@ -57,11 +58,11 @@ class {{ class }} extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  {{ rootNamespace }}Http\Requests\{{ model }}Request  $request
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \{{ rootNamespace }}Http\Requests\{{ model }}\{{ model }}UpdateRequest  $request
+     * @param  \DummyFullModelClass  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
-    public function update({{ model }}Request $request, {{ model }} ${{ modelVariable }}): JsonResponse
+    public function update({{ model }}UpdateRequest $request, {{ model }} ${{ modelVariable }}): JsonResponse
     {
         return tap(${{ modelVariable }})->update($request->all());
     }
@@ -69,7 +70,7 @@ class {{ class }} extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \{{ namespacedModel }}  ${{ modelVariable }}
+     * @param  \DummyFullModelClass  ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
     public function destroy({{ model }} ${{ modelVariable }}): JsonResponse
@@ -82,10 +83,10 @@ class {{ class }} extends Controller
     /**
      * Remove multiple resource from storage.
      *
-     * @param  {{ rootNamespace }}Http\Requests\{{ model }}Request  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroyMany({{ model }}Request $request): JsonResponse
+    public function destroyMany(Request $request): JsonResponse
     {
         foreach ($request->input('ids') as $id) {
             ${{ modelVariable }}={{ model }}::find($id);

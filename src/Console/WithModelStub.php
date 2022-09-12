@@ -10,8 +10,7 @@ trait WithModelStub
     /**
      * Build the model replacement values.
      *
-     * @param  array $replace
-     *
+     * @param  array  $replace
      * @return array
      */
     protected function buildModelReplacements(array $replace): array
@@ -58,7 +57,9 @@ trait WithModelStub
             return $model;
         }
 
-        $model = $rootNamespace . 'Models\\' . $model;
+        $model = is_dir(app_path('Models'))
+            ? $rootNamespace . 'Models\\' . $model
+            : $rootNamespace . $model;
 
         return $model;
     }

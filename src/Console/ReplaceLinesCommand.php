@@ -172,6 +172,16 @@ class ReplaceLinesCommand extends Command
     }
 
     /**
+     * Get the root namespace for the class.
+     *
+     * @return string
+     */
+    protected function rootNamespace()
+    {
+        return $this->laravel->getNamespace();
+    }
+
+    /**
      * Get the console command options.
      *
      * @return array
