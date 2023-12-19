@@ -39,7 +39,6 @@ class ReplaceLinesCommand extends Command
     protected $replaceFiles = [
         'app/Http/Controllers/IndexController.php',
         'routes/api.php',
-        'frontend/src/router/index.js',
         'database/seeders/PermissionsTableSeeder.php',
     ];
 
@@ -51,7 +50,6 @@ class ReplaceLinesCommand extends Command
     protected $replaceLines = [
         '// New MenuItem' => 'menuItem',
         '// New ApiRoute' => 'apiRoute',
-        '// New Route' => 'route',
         '// New Permissions' => 'permissions'
     ];
 

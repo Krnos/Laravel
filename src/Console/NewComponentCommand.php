@@ -54,17 +54,21 @@ class NewComponentCommand extends GeneratorCommand
 
         $this->createImport();
 
+        $this->createResource();
+
+        $this->createResourceCollection();
+
         $this->createPolicy();
 
         $this->createTest();
 
         $this->createController();
 
-        $this->createView();
+        // $this->createView();
 
-        $this->createModal();
+        // $this->createModal();
 
-        $this->createModule();
+        // $this->createModule();
 
         $this->createLang();
 
@@ -164,6 +168,34 @@ class NewComponentCommand extends GeneratorCommand
         $this->call('component:import', [
             'name' => "{$import}Import",
             '--model' => $modelName,
+        ]);
+    }
+
+    /**
+     * Create a resource file for the model.
+     *
+     * @return void
+     */
+    protected function createResource($type)
+    {
+        $resource = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('component:resource', [
+            'name' => "{$resource}Resource"
+        ]);
+    }
+
+    /**
+     * Create a resource collection file for the model.
+     *
+     * @return void
+     */
+    protected function createResourceCollection($type)
+    {
+        $resource = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('component:resource', [
+            'name' => "{$resource}Collection"
         ]);
     }
 

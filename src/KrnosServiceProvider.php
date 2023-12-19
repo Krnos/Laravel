@@ -16,6 +16,7 @@ use Krnos\Laravel\Console\PolicyMakeCommand;
 use Krnos\Laravel\Console\RequestMakeCommand;
 use Krnos\Laravel\Console\NewComponentCommand;
 use Krnos\Laravel\Console\ReplaceLinesCommand;
+use Krnos\Laravel\Console\ResourceMakeCommand;
 use Krnos\Laravel\Console\ControllerMakeCommand;
 use Illuminate\Contracts\Support\DeferrableProvider;
 
@@ -41,6 +42,7 @@ class KrnosServiceProvider extends ServiceProvider implements DeferrableProvider
                 NewComponentCommand::class,
                 NewViewCommand::class,
                 RequestMakeCommand::class,
+                ResourceMakeCommand::class,
                 ViewMakeCommand::class,
                 ReplaceLinesCommand::class,
                 ScopeMakeCommand::class,
