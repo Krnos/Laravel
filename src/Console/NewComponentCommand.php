@@ -176,7 +176,7 @@ class NewComponentCommand extends GeneratorCommand
      *
      * @return void
      */
-    protected function createResource($type)
+    protected function createResource()
     {
         $resource = Str::studly(class_basename($this->argument('name')));
 
@@ -190,7 +190,7 @@ class NewComponentCommand extends GeneratorCommand
      *
      * @return void
      */
-    protected function createResourceCollection($type)
+    protected function createResourceCollection()
     {
         $resource = Str::studly(class_basename($this->argument('name')));
 
