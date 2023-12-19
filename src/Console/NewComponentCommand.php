@@ -180,8 +180,11 @@ class NewComponentCommand extends GeneratorCommand
     {
         $resource = Str::studly(class_basename($this->argument('name')));
 
+        $modelName = $this->qualifyClass($this->getNameInput());
+
         $this->call('component:resource', [
-            'name' => "{$resource}Resource"
+            'name' => "{$resource}Resource",
+            '--model' => $modelName,
         ]);
     }
 
@@ -194,8 +197,11 @@ class NewComponentCommand extends GeneratorCommand
     {
         $resource = Str::studly(class_basename($this->argument('name')));
 
+        $modelName = $this->qualifyClass($this->getNameInput());
+
         $this->call('component:resource', [
-            'name' => "{$resource}Collection"
+            'name' => "{$resource}Collection",
+            '--model' => $modelName,
         ]);
     }
 
