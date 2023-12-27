@@ -3,6 +3,7 @@
 namespace Krnos\Laravel\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Input\InputOption;
 
 class RepositoryInterfaceMakeCommand extends GeneratorCommand
 {
