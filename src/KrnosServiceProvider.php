@@ -46,7 +46,7 @@ class KrnosServiceProvider extends ServiceProvider implements DeferrableProvider
                 ServiceMakeCommand::class,
                 ServiceInterfaceMakeCommand::class,
                 RepositoryMakeCommand::class,
-                RepositoryInterfaceMakeCommand::class
+                RepositoryInterfaceMakeCommand::class,
                 NewComponentCommand::class,
                 NewViewCommand::class,
                 RequestMakeCommand::class,
