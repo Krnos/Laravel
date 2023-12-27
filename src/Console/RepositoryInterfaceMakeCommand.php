@@ -14,7 +14,7 @@ class RepositoryInterfaceMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'make:repositoryinterface';
+    protected $name = 'component:repositoryinterface';
 
     /**
      * The console command description.
