@@ -235,7 +235,7 @@ class NewComponentCommand extends GeneratorCommand
     {
         $repository = Str::studly(class_basename($this->argument('name')));
 
-        $this->call('component:repository', [
+        $this->call('component:repositoryinterface', [
             'name'  => "{$repository}RepositoryInterface",
             '--model' => $repository,
         ]);
@@ -265,7 +265,7 @@ class NewComponentCommand extends GeneratorCommand
     {
         $service = Str::studly(class_basename($this->argument('name')));
 
-        $this->call('component:service', [
+        $this->call('component:serviceinterface', [
             'name'  => "{$service}ServiceInterface",
             '--model' => $service,
         ]);
