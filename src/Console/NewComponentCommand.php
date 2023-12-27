@@ -56,13 +56,19 @@ class NewComponentCommand extends GeneratorCommand
 
         $this->createResource();
 
-        $this->createResourceCollection();
-
         $this->createPolicy();
 
         $this->createTest();
 
         $this->createController();
+
+        $this->createInterfaceRepository();
+
+        $this->createRepository();
+
+        $this->createInterfaceService();
+
+        $this->createService();
 
         // $this->createView();
 
@@ -180,28 +186,9 @@ class NewComponentCommand extends GeneratorCommand
     {
         $resource = Str::studly(class_basename($this->argument('name')));
 
-        $modelName = $this->qualifyClass($this->getNameInput());
-
         $this->call('component:resource', [
             'name' => "{$resource}Resource",
-            '--model' => $modelName,
-        ]);
-    }
-
-    /**
-     * Create a resource collection file for the model.
-     *
-     * @return void
-     */
-    protected function createResourceCollection()
-    {
-        $resource = Str::studly(class_basename($this->argument('name')));
-
-        $modelName = $this->qualifyClass($this->getNameInput());
-
-        $this->call('component:resource', [
-            'name' => "{$resource}Collection",
-            '--model' => $modelName,
+            '--model' => $resource,
         ]);
     }
 
@@ -236,6 +223,64 @@ class NewComponentCommand extends GeneratorCommand
         $this->call('component:controller', [
             'name'  => "{$controller}Controller",
             '--model' => $modelName,
+        ]);
+    }
+
+    /**
+     * Create a repository interface for the model.
+     *
+     * @return void
+     */
+    protected function createInterfaceRepository()
+    {
+        $repository = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('component:repository', [
+            'name'  => "{$repository}RepositoryInterface",
+        ]);
+    }
+
+    /**
+     * Create a repository for the model.
+     *
+     * @return void
+     */
+    protected function createRepository()
+    {
+        $repository = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('component:repository', [
+            'name'  => "{$repository}Repository",
+            '--model' => $repository,
+        ]);
+    }
+    
+    /**
+     * Create a service interface for the model.
+     *
+     * @return void
+     */
+    protected function createInterfaceService()
+    {
+        $service = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('component:service', [
+            'name'  => "{$service}ServiceInterface"
+        ]);
+    }
+
+    /**
+     * Create a service for the model.
+     *
+     * @return void
+     */
+    protected function createService()
+    {
+        $service = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('component:service', [
+            'name'  => "{$service}Service",
+            '--model' => $service,
         ]);
     }
 

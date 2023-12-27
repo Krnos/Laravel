@@ -1,0 +1,16 @@
+<?php
+
+namespace {{ namespace }};
+
+use Controlla\Core\Services\BaseService;
+use Repositories\{{ model }}\{{ model }}RepositoryInterface;
+
+class {{ class }} extends BaseService implements {{ model }}ServiceInterface
+{
+    public function __construct({{ model }}RepositoryInterface $repository)
+    {
+      $this->repository = $repository;
+    }
+
+    // Define your custom methods
+}

@@ -80,6 +80,36 @@ class ResourceMakeCommand extends GeneratorCommand
     }
 
     /**
+     * Build the class with the given name.
+     *
+     * @param  string  $name
+     * @return string
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    protected function buildClass($name)
+    {
+        $stub = $this->files->get($this->getStub());
+
+        return $this->replaceNamespace($stub, $name)->replaceModel($stub, $name)->replaceClass($stub, $name);
+    }
+
+    /**
+     * Replace the class name for the given stub.
+     *
+     * @param  string  $stub
+     * @param  string  $name
+     * @return string
+     */
+    protected function replaceModel(&$stub, $name)
+    {
+        $modelVariable = Str::plural(Str::snake($this->option('model')));
+
+        $stub = str_replace(['DummyModel', '{{ modelVariable }}', '{{modelVariable}}'], $modelVariable, $stub);
+        return $this;
+    }
+
+    /**
      * Get the console command options.
      *
      * @return array

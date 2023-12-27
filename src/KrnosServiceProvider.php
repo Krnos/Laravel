@@ -14,11 +14,15 @@ use Krnos\Laravel\Console\ImportMakeCommand;
 use Krnos\Laravel\Console\ModuleMakeCommand;
 use Krnos\Laravel\Console\PolicyMakeCommand;
 use Krnos\Laravel\Console\RequestMakeCommand;
+use Krnos\Laravel\Console\ServiceMakeCommand;
 use Krnos\Laravel\Console\NewComponentCommand;
 use Krnos\Laravel\Console\ReplaceLinesCommand;
 use Krnos\Laravel\Console\ResourceMakeCommand;
 use Krnos\Laravel\Console\ControllerMakeCommand;
+use Krnos\Laravel\Console\RepositoryMakeCommand;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Krnos\Laravel\Console\ServiceInterfaceMakeCommand;
+use Krnos\Laravel\Console\RepositoryInterfaceMakeCommand;
 
 class KrnosServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -39,6 +43,10 @@ class KrnosServiceProvider extends ServiceProvider implements DeferrableProvider
                 ModelMakeCommand::class,
                 ModuleMakeCommand::class,
                 LangMakeCommand::class,
+                ServiceMakeCommand::class,
+                ServiceInterfaceMakeCommand::class,
+                RepositoryMakeCommand::class,
+                RepositoryInterfaceMakeCommand::class
                 NewComponentCommand::class,
                 NewViewCommand::class,
                 RequestMakeCommand::class,

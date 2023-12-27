@@ -1,0 +1,11 @@
+<?php
+
+namespace {{ namespace }};
+
+use Controlla\Core\Repositories\BaseRepository;
+use Repositories\{{ model }}\{{ model }}RepositoryInterface;
+
+class {{ class }} implements {{ model }}RepositoryInterface{
+
+    // Write something awesome
+}
