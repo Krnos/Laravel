@@ -3,7 +3,8 @@
 namespace {{ namespace }};
 
 use Controlla\Core\Services\BaseService;
-use Repositories\{{ model }}\{{ model }}RepositoryInterface;
+use App\Services\{{ model }}\{{ model }}ServiceInterface;
+use App\Repositories\{{ model }}\{{ model }}RepositoryInterface;
 
 class {{ class }} extends BaseService implements {{ model }}ServiceInterface
 {

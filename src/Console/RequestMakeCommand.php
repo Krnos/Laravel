@@ -76,7 +76,7 @@ class RequestMakeCommand extends GeneratorCommand
      */
     protected function replaceModel(&$stub, $name)
     {
-        $modelVariable = Str::plural(Str::snake($this->option('model')));
+        $modelVariable = $this->option('model');
 
         $stub = str_replace(['DummyModel', '{{ modelVariable }}', '{{modelVariable}}'], $modelVariable, $stub);
         return $this;

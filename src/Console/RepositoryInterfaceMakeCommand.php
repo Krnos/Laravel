@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 class RepositoryInterfaceMakeCommand extends GeneratorCommand
 {
+    use WithModelStub;
+
     /**
      * The console command name.
      *
@@ -35,7 +37,7 @@ class RepositoryInterfaceMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/../stubs/repository-interface.stub';
+        return __DIR__.'/../stubs/repository.interface.stub';
     }
 
     /**
@@ -48,6 +50,25 @@ class RepositoryInterfaceMakeCommand extends GeneratorCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         return $rootNamespace . '\Repositories\\' . $this->option('model');
+    }
+
+    /**
+     * Build the class with the given name.
+     *
+     * @param  string $name
+     *
+     * @return string
+     */
+    protected function buildClass($name)
+    {
+        $replace = [];
+        if ($this->option('model')) {
+            $replace = $this->buildModelReplacements($replace);
+        }
+
+        return str_replace(
+            array_keys($replace), array_values($replace), parent::buildClass($name)
+        );
     }
 
     /**

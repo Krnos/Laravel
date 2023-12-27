@@ -3,7 +3,7 @@
 namespace {{ namespace }};
 
 use Controlla\Core\Repositories\BaseRepository;
-use Repositories\{{ model }}\{{ model }}RepositoryInterface;
+use App\Repositories\{{ model }}\{{ model }}RepositoryInterface;
 
 class {{ class }} implements {{ model }}RepositoryInterface{
 
