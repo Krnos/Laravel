@@ -12,7 +12,6 @@ use App\Http\Filters\QueryBuilder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExportRequest;
 use App\Http\Requests\ImportRequest;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\{{ model }}\{{ model }}Resource;
 use Illuminate\Database\Eloquent\Collection;
 use App\Services\{{ model }}\{{ model }}ServiceInterface;
@@ -140,7 +139,7 @@ class {{ class }} extends Controller
      */
     public function import(ImportRequest $request, Excel $excel): JsonResponse
     {
-        $excel->import(new {{ model }}Import(Auth::getUser()), $request->file('importFile'));
+        $excel->import(new {{ model }}Import(auth()->user()), $request->file('importFile'));
 
         return response()->json(['code' => 201,'message' => __('strings.imported_successfully')], 201);
     }
