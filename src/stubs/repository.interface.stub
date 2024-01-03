@@ -4,7 +4,7 @@ namespace {{ namespace }};
 
 use Controlla\Core\Repositories\BaseRepositoryInterface;
 
-interface {{ class }} extends BaseRepositoryInterface{
-
+interface {{ class }} extends BaseRepositoryInterface
+{
     // Write something awesome
 }

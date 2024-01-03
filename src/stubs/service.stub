@@ -2,15 +2,14 @@
 
 namespace {{ namespace }};
 
-use Controlla\Core\Services\BaseService;
-use App\Services\{{ model }}\{{ model }}ServiceInterface;
 use App\Repositories\{{ model }}\{{ model }}RepositoryInterface;
+use Controlla\Core\Services\BaseService;
 
 class {{ class }} extends BaseService implements {{ model }}ServiceInterface
 {
     public function __construct({{ model }}RepositoryInterface $repository)
     {
-      $this->repository = $repository;
+        $this->repository = $repository;
     }
 
     // Define your custom methods

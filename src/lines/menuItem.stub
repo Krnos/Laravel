@@ -1,2 +1,2 @@
-$this->createMenuItem('strings.{{ modelVariablePlural }}', 'people-outline', '/{{ modelVariablePlural }}', ['{{ modelVariablePlural }}.index']),
+$this->createMenuItem('strings.{{ modelVariablePlural }}', 'people-outline', '/{{ modelVariableParam }}', ['{{ modelVariablePlural }}.index']),
             // New MenuItem

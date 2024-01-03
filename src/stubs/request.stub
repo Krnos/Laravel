@@ -3,8 +3,8 @@
 namespace {{ namespace }};
 
 use App\Models\DummyModel;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Http\FormRequest;
 
 class {{ class }} extends FormRequest
 {
@@ -15,7 +15,7 @@ class {{ class }} extends FormRequest
      */
     public function authorize()
     {
-       return $this->user()->can('{{ type }}',  DummyModel::class);
+        return $this->user()->can('{{ type }}', DummyModel::class);
     }
 
     /**
