@@ -3,9 +3,23 @@
 namespace {{ namespace }};
 
 use App\Models\{{ model }};
+use App\Http\Filters\QueryBuilder;
 
 class {{ model }}Repository implements {{ model }}RepositoryInterface
 {
+    /**
+     * Get paginated results
+     *
+     * @param Request $request
+     * @param int $pageSize
+     * @return mixed
+     */
+    public function getAllPaginated(Request $request, int $pageSize = 20): mixed
+    {
+        $queryBuilder = new QueryBuilder(new {{ model }}(), $request);
+        return $queryBuilder->build()->paginate($pageSize);
+    }
+
     /**
      * Fin an item by id
      * @param mixed $id

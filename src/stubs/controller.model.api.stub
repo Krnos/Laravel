@@ -39,9 +39,7 @@ class {{ class }} extends Controller
     {
         $this->authorize('viewAny', {{ model }}::class);
 
-        $queryBuilder = new QueryBuilder(new {{ model }}(), $request);
-
-        return {{ model }}Resource::collection($queryBuilder->build()->paginate(20))->response();
+        return {{ model }}Resource::collection($this->service->getAllPaginated($request))->response();
     }
 
     /**
