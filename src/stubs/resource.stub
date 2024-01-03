@@ -16,6 +16,6 @@ class {{ class }} extends JsonResource
     {
         return [
           'id' => $this->id,
-        ]
+        ];
     }
 }

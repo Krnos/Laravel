@@ -1,4 +1,4 @@
-Route::delete('/{{ modelVariablePlural }}/delete', '{{ model }}Controller@destroyMany')->name('{{ modelVariablePlural }}.destroyMany');
-        Route::apiResource('{{ modelVariablePlural }}', '{{ model }}Controller');
+Route::delete('/{{ modelVariableParam }}/delete', '{{ model }}Controller@destroyMany')->name('{{ modelVariableParam }}.destroyMany');
+        Route::apiResource('{{ modelVariableParam }}', '{{ model }}Controller');
 
         // New ApiRoute

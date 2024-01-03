@@ -3,14 +3,18 @@
 namespace DummyNamespace;
 
 use DummyFullModelClass;
+use App\Models\User;
 // use App\Notifications\ImportHasFailedNotification;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\ImportFailed;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 class DummyClass implements ToModel, WithChunkReading, ShouldQueue, WithEvents
 {
+    protected User $importedBy;
+
     /**
     * @param App\User $importedBy
     *
@@ -46,7 +50,7 @@ class DummyClass implements ToModel, WithChunkReading, ShouldQueue, WithEvents
     public function registerEvents(): array
     {
         return [
-            ImportFailed::class => function(ImportFailed $event) {
+            ImportFailed::class => function (ImportFailed $event) {
                 // $this->importedBy->notify(new ImportHasFailedNotification);
             },
         ];

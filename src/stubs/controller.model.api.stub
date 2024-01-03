@@ -3,19 +3,21 @@
 namespace {{ namespace }};
 
 use DummyFullModelClass;
-use Illuminate\Http\Request;
-use Maatwebsite\Excel\Excel;
 use App\Exports\{{ model }}Export;
 use App\Imports\{{ model }}Import;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
+use Illuminate\Http\JsonResponse;
 use App\Http\Filters\QueryBuilder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExportRequest;
 use App\Http\Requests\ImportRequest;
-use App\Services\{{ model }}\{{ model }}ServiceInterface;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\{{ model }}\{{ model }}Resource;
+use Illuminate\Database\Eloquent\Collection;
+use App\Services\{{ model }}\{{ model }}ServiceInterface;
 use App\Http\Requests\{{ model }}\{{ model }}StoreRequest;
 use App\Http\Requests\{{ model }}\{{ model }}UpdateRequest;
-use Illuminate\Database\Eloquent\Collection;
 
 class {{ class }} extends Controller
 {
@@ -24,7 +26,7 @@ class {{ class }} extends Controller
      */
     protected {{ model }}ServiceInterface $service;
 
-    public function __construct({{ model }}ServiceInterface $service) 
+    public function __construct({{ model }}ServiceInterface $service)
     {
         $this->service = $service;
     }
@@ -38,47 +40,47 @@ class {{ class }} extends Controller
     {
         $this->authorize('viewAny', {{ model }}::class);
 
-        $queryBuilder = new QueryBuilder(new {{ model }}, $request);
+        $queryBuilder = new QueryBuilder(new {{ model }}(), $request);
 
-        return response()->json($queryBuilder->build()->paginate(20),200);
-
+        return {{ model }}Resource::collection($queryBuilder->build()->paginate(20))->response();
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \{{ rootNamespace }}Http\Requests\{{ model }}\{{ model }}StoreRequest  $request
+     * @param  \App\Http\Requests\{{ model }}\{{ model }}StoreRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store({{ model }}StoreRequest $request): {{ model }}Resource
     {
-        ${{ modelVariable }} = $this->service->store();
-        return new {{ model }}Resource($user);
-        return response()->json(tap(new {{ model }}($request->all())), 201);
+        return new {{ model }}Resource($this->service->create($request->validated()));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \DummyFullModelClass  ${{ modelVariable }}
+     * @param  \DummyFullModelClass ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
-    public function show({{ model }} ${{ modelVariable }}): JsonResponse
+    public function show({{ model }} ${{ modelVariable }}): {{ model }}Resource
     {
-        $this->authorize('view', {{ model }}::class);
-        return response()->json(['status'=>'ok','data'=>${{ modelVariable }}],200);
+        $this->authorize('view', ${{ modelVariable }});
+        ${{ modelVariable }} = $this->service->findOrFail(${{ modelVariable }}->id);
+        return new {{ model }}Resource(${{ modelVariable }});
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \{{ rootNamespace }}Http\Requests\{{ model }}\{{ model }}UpdateRequest  $request
-     * @param  \DummyFullModelClass  ${{ modelVariable }}
+     * @param  \App\Http\Requests\{{ model }}\{{ model }}UpdateRequest  $request
+     * @param  \DummyFullModelClass ${{ modelVariable }}
      * @return \Illuminate\Http\Response
      */
-    public function update({{ model }}UpdateRequest $request, {{ model }} ${{ modelVariable }}): JsonResponse
+    public function update({{ model }}UpdateRequest $request, {{ model }} ${{ modelVariable }}): {{ model }}Resource
     {
-        return tap(${{ modelVariable }})->update($request->all());
+        $this->authorize('view', ${{ modelVariable }});
+        ${{ modelVariable }} = $$this->service->update(${{ modelVariable }}->id, $request->validated());
+        return {{ model }}Resource::make(${{ modelVariable }});
     }
 
     /**
@@ -90,8 +92,8 @@ class {{ class }} extends Controller
     public function destroy({{ model }} ${{ modelVariable }}): JsonResponse
     {
         $this->authorize('delete', ${{ modelVariable }});
-        ${{ modelVariable }}->delete();
-        return response()->json(['code'=>204,'message'=>__('strings.deleted_successfully')],204);
+        $this->service->delete(${{ modelVariable }});
+        return response()->json(null, 204);
     }
 
     /**
@@ -103,47 +105,44 @@ class {{ class }} extends Controller
     public function destroyMany(Request $request): JsonResponse
     {
         foreach ($request->input('ids') as $id) {
-            ${{ modelVariable }}={{ model }}::find($id);
+            ${{ modelVariable }} = {{ model }}::find($id);
 
             if (!${{ modelVariable }}) {
-                return response()->json(['errors'=>array(['code'=>404,'message'=>__('{{ modelVariablePlural }}.not_find')])],404);
+                return response()->json(['errors' => array(['code' => 404,'message' => __('{{ modelVariablePlural }}.not_find')])], 404);
             }
             $this->authorize('delete', ${{ modelVariable }});
         }
 
-        foreach ($request->input('ids') as $id) {
-            ${{ modelVariable }}={{ model }}::find($id);
-            ${{ modelVariable }}->delete();
-        }
+        $this->service->destroy($request->input('ids'));
 
-        return response()->json(['code'=>204,'message'=>__('strings.deleted_successfully')],204);
+        return response()->json(null, 204);
     }
 
     /**
      * Display report from a listing of the resource.
      *
-     * @param  {{ rootNamespace }}Http\Requests\ExportRequest $request
+     * @param  App\Http\Requests\ExportRequest $request
      * @return PDF CSV or XLS
      */
     public function export(ExportRequest $request, Excel $excel)
     {
-      $this->authorize('viewAny', {{ model }}::class);
-      $file = '{{ modelVariablePlural }}.' . $request->input('format');
-      $queryBuilder = new QueryBuilder(new {{ model }}, $request);
-      return $excel->download(new {{ model }}Export($queryBuilder->build()->get()), $file);
+        $this->authorize('viewAny', {{ model }}::class);
+        $file = '{{ modelVariablePlural }}.' . $request->input('format');
+        $queryBuilder = new QueryBuilder(new {{ model }}(), $request->request);
+        return $excel->download(new {{ model }}Export($queryBuilder->build()->get()), $file);
     }
 
     /**
      * Import data from a listing of the file.
      *
-     * @param  {{ rootNamespace }}Http\Requests\ImportRequest $request
+     * @param  App\Http\Requests\ImportRequest $request
      * @return PDF CSV or XLS
      */
     public function import(ImportRequest $request, Excel $excel): JsonResponse
     {
-        $excel->import(new {{ model }}Import(auth()->user()), $request->file('importFile'));
+        $excel->import(new {{ model }}Import(Auth::getUser()), $request->file('importFile'));
 
-        return response()->json(['code'=>201,'message'=>__('strings.imported_successfully')],201);
+        return response()->json(['code' => 201,'message' => __('strings.imported_successfully')], 201);
     }
 
     /**

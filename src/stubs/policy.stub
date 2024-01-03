@@ -30,7 +30,7 @@ class DummyClass
      */
     public function view(User $user, DummyModelClass ${{ modelVariable }})
     {
-        //
+        return $user->can('{{ modelVariablePlural }}.index');
     }
 
     /**
