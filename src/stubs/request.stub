@@ -2,22 +2,10 @@
 
 namespace {{ namespace }};
 
-use App\Models\DummyModel;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class {{ class }} extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return $this->user()->can('{{ type }}', DummyModel::class);
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -30,10 +18,5 @@ class {{ class }} extends FormRequest
           'name' => 'required|string',
         ];
 
-    }
-
-    protected function failedAuthorization()
-    {
-        throw new AuthorizationException(__('errors.action_unauthorized'));
     }
 }

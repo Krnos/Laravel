@@ -16,7 +16,7 @@ class DummyClass
      * @param  \App\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function index(User $user)
     {
         return $user->can('{{ modelVariablePlural }}.index');
     }
@@ -28,9 +28,9 @@ class DummyClass
      * @param  \DummyFullModelClass  ${{ modelVariable }}
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, DummyModelClass ${{ modelVariable }})
+    public function show(User $user, DummyModelClass ${{ modelVariable }})
     {
-        return $user->can('{{ modelVariablePlural }}.index');
+        return $user->can('{{ modelVariablePlural }}.show');
     }
 
     /**
@@ -39,7 +39,7 @@ class DummyClass
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function store(User $user)
     {
         return $user->can('{{ modelVariablePlural }}.store');
     }
@@ -63,8 +63,8 @@ class DummyClass
      * @param  \DummyFullModelClass  ${{ modelVariable }}
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, DummyModelClass ${{ modelVariable }})
+    public function destroy(User $user, DummyModelClass ${{ modelVariable }})
     {
-        return $user->can('{{ modelVariablePlural }}.delete');
+        return $user->can('{{ modelVariablePlural }}.destroy');
     }
 }

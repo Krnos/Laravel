@@ -37,7 +37,7 @@ class {{ class }} extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $this->authorize('viewAny', {{ model }}::class);
+        $this->authorize('index', {{ model }}::class);
 
         return {{ model }}Resource::collection($this->service->getAllPaginated($request))->response();
     }
@@ -61,7 +61,7 @@ class {{ class }} extends Controller
      */
     public function show({{ model }} ${{ modelVariable }}): {{ model }}Resource
     {
-        $this->authorize('view', ${{ modelVariable }});
+        $this->authorize('show', ${{ modelVariable }});
         ${{ modelVariable }} = $this->service->findOrFail(${{ modelVariable }}->id);
         return new {{ model }}Resource(${{ modelVariable }});
     }
@@ -75,9 +75,9 @@ class {{ class }} extends Controller
      */
     public function update({{ model }}UpdateRequest $request, {{ model }} ${{ modelVariable }}): {{ model }}Resource
     {
-        $this->authorize('view', ${{ modelVariable }});
-        ${{ modelVariable }} = $$this->service->update(${{ modelVariable }}->id, $request->validated());
-        return {{ model }}Resource::make(${{ modelVariable }});
+        $this->authorize('update', ${{ modelVariable }});
+        ${{ modelVariable }} = $this->service->update(${{ modelVariable }}->id, $request->validated());
+        return new {{ model }}Resource(${{ modelVariable }});
     }
 
     /**
@@ -88,8 +88,8 @@ class {{ class }} extends Controller
      */
     public function destroy({{ model }} ${{ modelVariable }}): JsonResponse
     {
-        $this->authorize('delete', ${{ modelVariable }});
-        $this->service->delete(${{ modelVariable }});
+        $this->authorize('destroy', ${{ modelVariable }});
+        $this->service->delete(${{ modelVariable }}->id);
         return response()->json(null, 204);
     }
 
@@ -123,7 +123,7 @@ class {{ class }} extends Controller
      */
     public function export(ExportRequest $request, Excel $excel)
     {
-        $this->authorize('viewAny', {{ model }}::class);
+        $this->authorize('index', {{ model }}::class);
         $file = '{{ modelVariablePlural }}.' . $request->input('format');
         $queryBuilder = new QueryBuilder(new {{ model }}(), $request->request);
         return $excel->download(new {{ model }}Export($queryBuilder->build()->get()), $file);
