@@ -50,6 +50,7 @@ class {{ class }} extends Controller
      */
     public function store({{ model }}StoreRequest $request): {{ model }}Resource
     {
+        $this->authorize('store', {{ model }}::class);
         return new {{ model }}Resource($this->service->create($request->validated()));
     }
 
